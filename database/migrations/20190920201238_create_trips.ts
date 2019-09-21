@@ -1,16 +1,16 @@
 import * as Knex from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('trips', users => {
-    users.increments();
+  return knex.schema.createTable('trips', trips => {
+    trips.increments();
 
-    users.string('destination', 255);
+    trips.string('destination', 255);
 
-    users.date('date');
+    trips.date('date');
 
-    users.boolean('active').notNullable();
+    trips.boolean('active').notNullable();
 
-    users
+    trips
       .integer('user_id')
       .unsigned()
       .notNullable()
