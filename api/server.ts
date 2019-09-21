@@ -7,7 +7,7 @@ import express, {
 import helmet from 'helmet';
 import cors from 'cors';
 import AuthRouter from './auth/auth-router';
-import Codes from '../database/config/codes';
+import Codes from '../config/codes';
 
 const server = express();
 
