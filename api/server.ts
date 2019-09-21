@@ -7,6 +7,7 @@ import express, {
 import helmet from 'helmet';
 import cors from 'cors';
 import AuthRouter from './auth/auth-router';
+import UserRouter from './users/user-router';
 import Codes from '../config/codes';
 
 const server = express();
@@ -16,6 +17,7 @@ server.use(cors());
 server.use(express.json());
 
 server.use('/api/auth', AuthRouter);
+server.use('/api/users', UserRouter);
 
 const errorHandler = (
   err: ErrorRequestHandler,
