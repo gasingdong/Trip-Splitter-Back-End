@@ -2,6 +2,10 @@ import { QueryBuilder } from 'knex';
 import db from '../../database/db-config';
 import { User, Trip } from '../../types';
 
+interface UserInput {
+  username: string;
+  password: string;
+}
 interface TripInput {
   user_id: number;
   destination?: string;
@@ -22,7 +26,7 @@ const getTripsByUsername = (username: string): QueryBuilder<{}, Trip[]> => {
     .select(['t.id', 't.destination', 't.date', 't.active']);
 };
 
-const add = (user: User): QueryBuilder => {
+const add = (user: UserInput): QueryBuilder => {
   return db('users').insert(user, 'id');
 };
 
