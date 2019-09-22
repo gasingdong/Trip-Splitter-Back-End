@@ -43,4 +43,17 @@ describe('trip-router.js', () => {
       });
     });
   });
+
+  describe('get people on trip', () => {
+    it('should retrieve list of people', async () => {
+      const res = await request(server).get('/api/trips/1/people');
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBe(2);
+    });
+
+    it('should fail on invalid entry', async () => {
+      const res = await request(server).get('/api/trips/999/people');
+      expect(res.status).toBe(404);
+    });
+  });
 });

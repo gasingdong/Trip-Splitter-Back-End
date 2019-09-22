@@ -26,4 +26,19 @@ router
     }
   );
 
+router
+  .route('/:id/people')
+  .all(TripMiddleware.validateTripId)
+  .get(
+    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      try {
+        const id = Number(req.params.id);
+        const people = await Trips.getPeopleByTripId(id);
+        res.status(200).json(people);
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
+
 export default router;

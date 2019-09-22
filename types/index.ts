@@ -10,3 +10,10 @@ export interface Trip {
   date: null | Date;
   active: boolean;
 }
+
+export interface Person {
+  trip_id: number;
+  first_name: string;
+  last_name: null | string;
+  user_id: null | number;
+}
