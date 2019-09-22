@@ -32,7 +32,7 @@ const restrictedByTrip = (
   const token = req.headers.authorization;
 
   if (token) {
-    jwt.verify(token, Secrets.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, Secrets.JWT_SECRET, (err, decoded) => {
       const decodedToken = JSON.parse(JSON.stringify(decoded));
       if (err || !req.trip || decodedToken.username !== req.trip.created_by) {
         res.status(401).json(Codes.INVALID_CRED);

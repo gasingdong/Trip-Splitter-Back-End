@@ -18,16 +18,20 @@ const validateTripId = async (
 
   // Ensure there's a username
   if (id) {
-    const existingTrip = await Trips.getByTripId(Number(id));
+    try {
+      const existingTrip = await Trips.getByTripId(Number(id));
 
-    if (existingTrip) {
-      req.trip = {
-        ...existingTrip,
-        active: Boolean(existingTrip.active),
-      };
-      next();
-    } else {
-      res.status(404).json(Codes.NOT_FOUND);
+      if (existingTrip) {
+        req.trip = {
+          ...existingTrip,
+          active: Boolean(existingTrip.active),
+        };
+        next();
+      } else {
+        res.status(404).json(Codes.NOT_FOUND);
+      }
+    } catch (err) {
+      next(err);
     }
   } else {
     res.status(400).json(Codes.BAD_REQUEST);

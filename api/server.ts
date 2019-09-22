@@ -9,6 +9,7 @@ import cors from 'cors';
 import AuthRouter from './auth/auth-router';
 import UserRouter from './users/user-router';
 import TripRouter from './trips/trip-router';
+import PersonRouter from './people/people-router';
 import Codes from '../config/codes';
 
 const server = express();
@@ -20,6 +21,7 @@ server.use(express.json());
 server.use('/api/auth', AuthRouter);
 server.use('/api/users', UserRouter);
 server.use('/api/trips', TripRouter);
+server.use('/api/people', PersonRouter);
 
 const errorHandler = (
   err: ErrorRequestHandler,

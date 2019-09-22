@@ -1,28 +1,28 @@
 import { Request, Response, NextFunction } from 'express';
 import Codes from '../../config/codes';
-import Users from './user-model';
-import { User } from '../../types';
+import People from './people-model';
+import { Person } from '../../types';
 
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: User;
+    person?: Person;
   }
 }
 
-const validateUsername = async (
+const validatePersonId = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { username } = req.params;
+  const { id } = req.params;
 
   // Ensure there's a username
-  if (username) {
+  if (id) {
     try {
-      const existingUser = await Users.getByUsername(username);
+      const existingPerson = await People.getByPersonId(Number(id));
 
-      if (existingUser) {
-        req.user = existingUser;
+      if (existingPerson) {
+        req.person = existingPerson;
         next();
       } else {
         res.status(404).json(Codes.NOT_FOUND);
@@ -36,5 +36,5 @@ const validateUsername = async (
 };
 
 export default {
-  validateUsername,
+  validatePersonId,
 };
