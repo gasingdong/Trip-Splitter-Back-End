@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Trips from './trip-model';
 import TripMiddleware from './trip-middleware';
+import Restricted from '../restricted-middleware';
 
 const router = require('express').Router();
 
@@ -11,6 +12,7 @@ router
     res.status(200).json(req.trip);
   })
   .put(
+    Restricted.restrictedByTrip,
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const id = Number(req.params.id);

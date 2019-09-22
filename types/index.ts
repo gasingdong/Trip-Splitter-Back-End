@@ -9,6 +9,7 @@ export interface Trip {
   destination: null | string;
   date: null | Date;
   active: boolean;
+  created_by: string;
 }
 
 export interface Person {

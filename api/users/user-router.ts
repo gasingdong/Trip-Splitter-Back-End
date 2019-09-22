@@ -25,16 +25,19 @@ router
       next(err);
     }
   })
-  .post(Restricted, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const saved = await Users.addTripForUserId(
-        req.body,
-        (req.user as User).id
-      );
-      res.status(201).json(saved);
-    } catch (err) {
-      next(err);
+  .post(
+    Restricted.restrictedByUser,
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const saved = await Users.addTripForUserId(
+          req.body,
+          (req.user as User).id
+        );
+        res.status(201).json(saved);
+      } catch (err) {
+        next(err);
+      }
     }
-  });
+  );
 
 export default router;

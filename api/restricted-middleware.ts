@@ -3,7 +3,11 @@ import { Request, Response, NextFunction } from 'express';
 import Secrets from '../config/secrets';
 import Codes from '../config/codes';
 
-export default (req: Request, res: Response, next: NextFunction): void => {
+const restrictedByUser = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   const token = req.headers.authorization;
 
   if (token) {
@@ -18,4 +22,30 @@ export default (req: Request, res: Response, next: NextFunction): void => {
   } else {
     res.status(401).json(Codes.INVALID_CRED);
   }
+};
+
+const restrictedByTrip = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const token = req.headers.authorization;
+
+  if (token) {
+    jwt.verify(token, Secrets.JWT_SECRET, async (err, decoded) => {
+      const decodedToken = JSON.parse(JSON.stringify(decoded));
+      if (err || !req.trip || decodedToken.username !== req.trip.created_by) {
+        res.status(401).json(Codes.INVALID_CRED);
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.status(401).json(Codes.INVALID_CRED);
+  }
+};
+
+export default {
+  restrictedByUser,
+  restrictedByTrip,
 };

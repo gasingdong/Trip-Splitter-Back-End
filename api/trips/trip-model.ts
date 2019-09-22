@@ -9,8 +9,16 @@ interface TripUpdate {
 }
 
 const getByTripId = (id: number): QueryBuilder<{}, Trip> => {
-  return db('trips')
-    .where({ id })
+  return db('trips as t')
+    .join('users as u', 'u.id', 't.user_id')
+    .select([
+      't.id',
+      't.destination',
+      't.date',
+      't.active',
+      'u.username as created_by',
+    ])
+    .where('t.id', id)
     .first<Trip>();
 };
 
