@@ -1,6 +1,6 @@
 import * as Knex from 'knex';
 import bcryptjs from 'bcryptjs';
-import Secrets from '../../../config/secrets';
+import Testing from '../../../config/testing';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function seed(knex: Knex): Promise<void> {
@@ -11,8 +11,8 @@ export async function seed(knex: Knex): Promise<void> {
       // Inserts seed entries
       return knex('users').insert([
         {
-          username: Secrets.admin,
-          password: bcryptjs.hashSync(Secrets.adminPassword),
+          username: Testing.TEST_USER,
+          password: bcryptjs.hashSync(Testing.TEST_PASS),
         },
       ]);
     });

@@ -7,7 +7,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
   const token = req.headers.authorization;
 
   if (token) {
-    jwt.verify(token, Secrets.jwtSecret, (err, decoded) => {
+    jwt.verify(token, Secrets.JWT_SECRET, (err, decoded) => {
       const decodedToken = JSON.parse(JSON.stringify(decoded));
       if (err || decodedToken.username !== req.params.username) {
         res.status(401).json(Codes.INVALID_CRED);

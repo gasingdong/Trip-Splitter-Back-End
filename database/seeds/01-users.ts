@@ -11,8 +11,8 @@ export async function seed(knex: Knex): Promise<void> {
       // Inserts seed entries
       return knex('users').insert([
         {
-          username: Secrets.admin,
-          password: bcryptjs.hashSync(Secrets.adminPassword),
+          username: Secrets.ADMIN,
+          password: bcryptjs.hashSync(Secrets.ADMIN_PASS),
         },
       ]);
     });

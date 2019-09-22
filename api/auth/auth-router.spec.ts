@@ -4,7 +4,7 @@ import db from '../../database/db-config';
 import server from '../server';
 
 // Dummy user for testing purposes
-const testUser = { username: 'test', password: 'test' };
+const dummyUser = { username: 'dummy', password: 'dummypassword' };
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
@@ -17,7 +17,7 @@ describe('auth-router.js', () => {
     it('should add user to database', async () => {
       const res = await request(server)
         .post('/api/auth/register')
-        .send(testUser);
+        .send(dummyUser);
       expect(res.status).toBe(201);
       const results = await db('users');
       expect(results).toHaveLength(2);
@@ -35,14 +35,14 @@ describe('auth-router.js', () => {
     it('should return JSON', async () => {
       const res = await request(server)
         .post('/api/auth/login')
-        .send(testUser);
+        .send(dummyUser);
       expect(res.type).toMatch(/json/i);
     });
 
     it('should receive a 200 OK on valid login', async () => {
       const res = await request(server)
         .post('/api/auth/login')
-        .send(testUser);
+        .send(dummyUser);
       expect(res.status).toBe(200);
     });
   });

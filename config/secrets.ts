@@ -1,5 +1,11 @@
+const JWT_SECRET = process.env.JWT_SECRET || 'elementary my dear watson';
+
+const ADMIN = process.env.ADMIN_USERNAME || 'admin';
+
+const ADMIN_PASS = process.env.ADMIN_PASS || 'admin';
+
 export default {
-  jwtSecret: process.env.JWT_SECRET || 'elementary my dear watson',
-  admin: process.env.ADMIN_USERNAME || 'admin',
-  adminPassword: process.env.ADMIN_PASS || 'admin',
+  JWT_SECRET,
+  ADMIN,
+  ADMIN_PASS,
 };
