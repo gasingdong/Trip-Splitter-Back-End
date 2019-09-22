@@ -14,7 +14,6 @@ describe('trip-router.js', () => {
     it('should get right trip from database', async () => {
       const res = await request(server).get('/api/trips/1');
       expect(res.status).toBe(200);
-      console.log(res.body);
       expect(res.body.id).toBe(1);
     });
 
