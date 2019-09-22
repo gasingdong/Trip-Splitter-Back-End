@@ -11,7 +11,7 @@ export async function seed(knex: Knex): Promise<void> {
         {
           user_id: 1,
           destination: 'Test Destination',
-          active: false,
+          active: true,
         },
       ]);
     });

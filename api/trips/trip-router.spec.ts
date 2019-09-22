@@ -22,4 +22,25 @@ describe('trip-router.js', () => {
       expect(res.status).toBe(404);
     });
   });
+
+  describe('change trip', () => {
+    it('should update database', async () => {
+      const testBody = {
+        destination: 'something',
+        date: '09-14-2019',
+      };
+      const res = await request(server)
+        .put('/api/trips/1')
+        .send(testBody);
+      expect(res.status).toBe(200);
+
+      const trip = await request(server).get('/api/trips/1');
+      expect(trip.body).toEqual({
+        id: 1,
+        user_id: 1,
+        active: true,
+        ...testBody,
+      });
+    });
+  });
 });
