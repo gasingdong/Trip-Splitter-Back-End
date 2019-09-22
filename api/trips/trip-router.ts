@@ -41,6 +41,18 @@ router
         next(err);
       }
     }
+  )
+  .post(
+    Restricted.restrictedByTrip,
+    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      try {
+        const id = Number(req.params.id);
+        const saved = await Trips.addPersonToTrip(req.body, id);
+        res.status(201).json(saved);
+      } catch (err) {
+        next(err);
+      }
+    }
   );
 
 export default router;

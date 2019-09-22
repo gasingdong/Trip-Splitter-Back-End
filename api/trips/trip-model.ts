@@ -8,6 +8,12 @@ interface TripUpdate {
   active?: boolean;
 }
 
+interface PersonInput {
+  first_name: string;
+  last_name?: string;
+  user_id?: string;
+}
+
 const getByTripId = (id: number): QueryBuilder<{}, Trip> => {
   return db('trips as t')
     .join('users as u', 'u.id', 't.user_id')
@@ -29,6 +35,18 @@ const getPeopleByTripId = (id: number): QueryBuilder<{}, Person[]> => {
     .select(['p.id', 'p.first_name', 'p.last_name']);
 };
 
+const addPersonToTrip = (person: PersonInput, id: number): QueryBuilder => {
+  return db('people').insert(
+    {
+      trip_id: id,
+      first_name: person.first_name,
+      last_name: person.last_name,
+      user_id: person.user_id,
+    },
+    'id'
+  );
+};
+
 const updateTrip = (trip: TripUpdate, id: number): QueryBuilder<{}, Trip> => {
   return db('trips')
     .where({ id })
@@ -38,5 +56,6 @@ const updateTrip = (trip: TripUpdate, id: number): QueryBuilder<{}, Trip> => {
 export default {
   getByTripId,
   getPeopleByTripId,
+  addPersonToTrip,
   updateTrip,
 };
