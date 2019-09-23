@@ -9,10 +9,14 @@ interface UserInput {
   password: string;
 }
 
-const getByUsername = async (username: string): Promise<User> => {
+const getByUsername = async (username: string): Promise<User | null> => {
   const user = await db('users')
     .where({ username })
     .first<User>();
+
+  if (!user) {
+    return null;
+  }
   let trips = await Trips.getTripsByUsername(username);
   trips = await Promise.all(
     trips.map(async trip => {

@@ -96,9 +96,16 @@ const updateTrip = (trip: TripUpdate, id: number): QueryBuilder<{}, Trip> => {
     .update(trip, 'id');
 };
 
+const deleteTrip = (id: number): QueryBuilder => {
+  return db('trips')
+    .where({ id })
+    .del('id');
+};
+
 export default {
   getByTripId,
   getTripsByUsername,
   addTripForUserId,
   updateTrip,
+  deleteTrip,
 };

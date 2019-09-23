@@ -4,6 +4,7 @@ import Users from '../users/user-model';
 import AuthMiddleware from './auth-middleware';
 import Authenticate from './authentication';
 import Codes from '../../config/codes';
+import db from '../../database/db-config';
 
 const router = require('express').Router();
 
@@ -29,7 +30,9 @@ router.post(
 
     if (username && password) {
       try {
-        const user = await Users.getByUsername(username);
+        const user = await db('users')
+          .where({ username })
+          .first();
         if (user && bcryptjs.compareSync(password, user.password)) {
           const token = Authenticate.generateToken(user);
           res.status(200).json({ token });

@@ -12,15 +12,23 @@ beforeAll(async () => {
 
 describe('trip-router.js', () => {
   describe('get trip by id endpoint', () => {
-    it('should get right trip from database', async () => {
+    it('should refuse if not authorized', async () => {
       const res = await request(server).get('/api/trips/1');
-      expect(res.status).toBe(200);
-      expect(res.body.id).toBe(1);
+      expect(res.status).toBe(401);
     });
 
-    it('should fail on invalid entry', async () => {
-      const res = await request(server).get('/api/trips/999');
-      expect(res.status).toBe(404);
+    it('should get right trip from database', async () => {
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+      const res = await request(server)
+        .get('/api/trips/1')
+        .set('Authorization', token);
+      expect(res.status).toBe(200);
+      expect(res.body.id).toBe(1);
     });
   });
 
@@ -50,26 +58,31 @@ describe('trip-router.js', () => {
         .send(testBody);
       expect(res.status).toBe(200);
 
-      const trip = await request(server).get('/api/trips/1');
-      expect(trip.body).toEqual({
-        id: 1,
-        created_by: 'test',
-        active: true,
-        ...testBody,
-      });
+      const trip = await request(server)
+        .get('/api/trips/1')
+        .set('Authorization', token);
+      expect(trip.status).toBe(200);
     });
   });
 
   describe('get people on trip', () => {
     it('should retrieve list of people', async () => {
-      const res = await request(server).get('/api/trips/1/people');
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+      const res = await request(server)
+        .get('/api/trips/1/people')
+        .set('Authorization', token);
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
     });
 
     it('should fail on invalid entry', async () => {
       const res = await request(server).get('/api/trips/999/people');
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(401);
     });
   });
 
@@ -97,9 +110,35 @@ describe('trip-router.js', () => {
         .send(testUser);
       expect(addPerson.status).toBe(201);
 
-      const getPeople = await request(server).get('/api/trips/1/people');
+      const getPeople = await request(server)
+        .get('/api/trips/1/people')
+        .set('Authorization', token);
       expect(getPeople.status).toBe(200);
       expect(getPeople.body).toHaveLength(3);
+    });
+  });
+
+  describe('delete trip', () => {
+    it('should refuse if not authorized', async () => {
+      const res = await request(server).del('/api/trips/1');
+      expect(res.status).toBe(401);
+    });
+
+    it('should delete trip', async () => {
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+
+      const deleted = await request(server)
+        .del('/api/trips/1')
+        .set('Authorization', token);
+      expect(deleted.status).toBe(201);
+
+      const trip = await request(server).get('/api/trips/1');
+      expect(trip.status).toBe(404);
     });
   });
 });

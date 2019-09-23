@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Codes from '../../config/codes';
-import Users from '../users/user-model';
+import db from '../../database/db-config';
 
 const validateUser = async (
   req: Request,
@@ -17,7 +17,9 @@ const validateUser = async (
 
   // Ensure there's both a username and password
   if (username && password) {
-    const existingUser = await Users.getByUsername(username);
+    const existingUser = await await db('users')
+      .where({ username })
+      .first();
 
     if (!existingUser) {
       next();
