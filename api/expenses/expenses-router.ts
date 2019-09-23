@@ -36,6 +36,20 @@ router
     }
   );
 
+router.post(
+  '/:id/debts',
+  [ExpensesMiddleware.validateExpenseId, Restricted.restrictedByTrip],
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = Number(req.params.id);
+      const saved = await Debts.addDebtToExpense(req.body, id);
+      res.status(201).json(saved);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 router
   .route('/:id/debts/:personId')
   .all([ExpensesMiddleware.validateDebtId, Restricted.restrictedByTrip])

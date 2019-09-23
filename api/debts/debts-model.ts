@@ -3,6 +3,10 @@ import { QueryBuilder } from 'knex';
 import db from '../../database/db-config';
 import { Debt } from '../../types';
 
+interface DebtInput {
+  person_id: number;
+  amount: number;
+}
 interface DebtUpdate {
   amount?: number;
 }
@@ -30,6 +34,13 @@ const getDebtsByExpenseId = (id: number): QueryBuilder<{}, Debt[]> => {
     ]);
 };
 
+const addDebtToExpense = (debt: DebtInput, id: number): QueryBuilder => {
+  return db('debt').insert({ ...debt, expense_id: id }, [
+    'expense_id',
+    'person_id',
+  ]);
+};
+
 const updateDebt = (
   debt: DebtUpdate,
   expense_id: number,
@@ -49,6 +60,7 @@ const deleteDebt = (expense_id: number, person_id: number): QueryBuilder => {
 export default {
   getDebtByPersonAndExpense,
   getDebtsByExpenseId,
+  addDebtToExpense,
   updateDebt,
   deleteDebt,
 };

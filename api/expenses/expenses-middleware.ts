@@ -30,8 +30,10 @@ const validateExpenseId = async (
 
         if (trip) {
           req.trip = trip;
+          next();
+        } else {
+          res.status(404).json(Codes.NOT_FOUND);
         }
-        next();
       } else {
         res.status(404).json(Codes.NOT_FOUND);
       }
@@ -57,19 +59,26 @@ const validateDebtId = async (
         Number(id),
         Number(personId)
       );
-
       if (existingDebt) {
         req.debt = existingDebt;
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        const { trip_id } = await Expenses.getByExpenseId(
+        const existingExpense = await Expenses.getByExpenseId(
           existingDebt.expense_id
         );
-        const trip = await Trips.getByTripId(trip_id);
 
-        if (trip) {
-          req.trip = trip;
+        if (existingExpense) {
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          const { trip_id } = existingExpense;
+          const trip = await Trips.getByTripId(trip_id);
+
+          if (trip) {
+            req.trip = trip;
+            next();
+          } else {
+            res.status(404).json(Codes.NOT_FOUND);
+          }
+        } else {
+          res.status(404).json(Codes.NOT_FOUND);
         }
-        next();
       } else {
         res.status(404).json(Codes.NOT_FOUND);
       }
