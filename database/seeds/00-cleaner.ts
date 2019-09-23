@@ -1,5 +1,6 @@
 import * as Knex from 'knex';
-import cleaner from 'knex-cleaner';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const cleaner = require('knex-cleaner');
 
 // eslint-disable-next-line import/prefer-default-export
 export async function seed(knex: Knex): Promise<void> {
