@@ -11,16 +11,62 @@ beforeAll(async () => {
 });
 
 describe('people-router.js', () => {
-  describe('get person by id endpoint', () => {
-    it('should get right person from database', async () => {
-      const res = await request(server).get('/api/people/1');
-      expect(res.status).toBe(200);
-      expect(res.body.id).toBe(1);
+  describe('edit person', () => {
+    it('should fail on invalid entry', async () => {
+      const res = await request(server)
+        .post('/api/people/1')
+        .send({});
+      expect(res.status).toBe(401);
     });
 
+    it('should edit person', async () => {
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+      const res = await request(server)
+        .put('/api/people/1')
+        .set('Authorization', token)
+        .send({ first_name: 'David' });
+      expect(res.status).toBe(200);
+
+      const person = await db('people')
+        .where({ id: 1 })
+        .first();
+      expect(person).toEqual({
+        id: 1,
+        trip_id: 1,
+        user_id: null,
+        first_name: 'David',
+        last_name: 'Dong',
+      });
+    });
+  });
+
+  describe('delete person', () => {
     it('should fail on invalid entry', async () => {
-      const res = await request(server).get('/api/people/999');
-      expect(res.status).toBe(404);
+      const res = await request(server).del('/api/people/1');
+      expect(res.status).toBe(401);
+    });
+
+    it('should delete person', async () => {
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+      const res = await request(server)
+        .del('/api/people/1')
+        .set('Authorization', token);
+      expect(res.status).toBe(200);
+
+      const person = await db('people')
+        .where({ id: 1 })
+        .first();
+      expect(person).toBeUndefined();
     });
   });
 });

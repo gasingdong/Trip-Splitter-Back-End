@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Codes from '../../config/codes';
 import People from './people-model';
+import Trips from '../trips/trip-model';
 import { Person } from '../../types';
 
 declare module 'express-serve-static-core' {
@@ -23,6 +24,11 @@ const validatePersonId = async (
 
       if (existingPerson) {
         req.person = existingPerson;
+        const trip = await Trips.getByTripId(existingPerson.trip_id);
+
+        if (trip) {
+          req.trip = trip;
+        }
         next();
       } else {
         res.status(404).json(Codes.NOT_FOUND);

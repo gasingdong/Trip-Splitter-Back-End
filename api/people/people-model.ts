@@ -8,6 +8,11 @@ interface PersonInput {
   user_id?: string;
 }
 
+interface PersonUpdate {
+  first_name?: string;
+  last_name?: string;
+}
+
 const getByPersonId = (id: number): QueryBuilder<{}, Person> => {
   return db('people')
     .where({ id })
@@ -33,8 +38,22 @@ const addPersonToTrip = (person: PersonInput, id: number): QueryBuilder => {
   );
 };
 
+const updatePerson = (person: PersonUpdate, id: number): QueryBuilder => {
+  return db('people')
+    .where({ id })
+    .update(person, 'id');
+};
+
+const deletePerson = (id: number): QueryBuilder => {
+  return db('people')
+    .where({ id })
+    .del('id');
+};
+
 export default {
   getByPersonId,
   getPeopleByTripId,
   addPersonToTrip,
+  updatePerson,
+  deletePerson,
 };
