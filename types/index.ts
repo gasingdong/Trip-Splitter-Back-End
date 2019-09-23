@@ -31,3 +31,11 @@ export interface Expense {
   trip_id: number;
   amount: number;
 }
+
+export interface Debt {
+  expense_id: number;
+  person_id: number;
+  first_name: string;
+  last_name: null | string;
+  amount: number;
+}
