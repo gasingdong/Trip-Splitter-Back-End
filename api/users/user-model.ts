@@ -1,6 +1,7 @@
 import { QueryBuilder } from 'knex';
 import db from '../../database/db-config';
 import Trips from '../trips/trip-model';
+import People from '../people/people-model';
 import { User } from '../../types';
 
 interface UserInput {
@@ -8,17 +9,24 @@ interface UserInput {
   password: string;
 }
 
-const getByUsername = (username: string): Promise<User> => {
-  const userQuery = db('users')
+const getByUsername = async (username: string): Promise<User> => {
+  const user = await db('users')
     .where({ username })
     .first<User>();
-  const tripsQuery = Trips.getTripsByUsername(username);
-  return Promise.all([userQuery, tripsQuery]).then(([user, trips]) => {
-    return {
-      ...user,
-      trips,
-    };
-  });
+  let trips = await Trips.getTripsByUsername(username);
+  trips = await Promise.all(
+    trips.map(async trip => {
+      const people = await People.getPeopleByTripId(trip.id);
+      return {
+        ...trip,
+        num_people: people.length,
+      };
+    })
+  );
+  return {
+    ...user,
+    trips,
+  };
 };
 
 const add = (user: UserInput): QueryBuilder => {
