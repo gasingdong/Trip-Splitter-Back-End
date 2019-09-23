@@ -56,8 +56,8 @@ const validateDebtId = async (
   if (id && personId) {
     try {
       const existingDebt = await Debts.getDebtByPersonAndExpense(
-        Number(id),
-        Number(personId)
+        Number(personId),
+        Number(id)
       );
       if (existingDebt) {
         req.debt = existingDebt;
