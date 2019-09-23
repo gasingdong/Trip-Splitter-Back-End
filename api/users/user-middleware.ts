@@ -5,7 +5,11 @@ import { User } from '../../types';
 
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: User;
+    user?: {
+      id: number;
+      username: string;
+      photo: string;
+    };
   }
 }
 
@@ -22,7 +26,11 @@ const validateUsername = async (
       const existingUser = await Users.getByUsername(username);
 
       if (existingUser) {
-        req.user = existingUser;
+        req.user = {
+          id: existingUser.id,
+          username: existingUser.username,
+          photo: existingUser.photo,
+        };
         next();
       } else {
         res.status(404).json(Codes.NOT_FOUND);
