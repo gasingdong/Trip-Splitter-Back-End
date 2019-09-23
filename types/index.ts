@@ -21,3 +21,13 @@ export interface Person {
   last_name: null | string;
   user_id: null | number;
 }
+
+export interface Expense {
+  id: number;
+  person_id: number;
+  name: null | string;
+  first_name: string;
+  last_name: null | string;
+  trip_id: number;
+  amount: number;
+}

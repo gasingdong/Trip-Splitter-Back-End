@@ -18,7 +18,7 @@ const getPeopleByTripId = (id: number): QueryBuilder<{}, Person[]> => {
   return db('people as p')
     .where({ trip_id: id })
     .join('trips as t', 't.id', 'p.trip_id')
-    .select(['p.id', 'p.first_name', 'p.last_name']);
+    .select(['p.id', 'p.first_name', 'p.last_name', 'p.user_id']);
 };
 
 const addPersonToTrip = (person: PersonInput, id: number): QueryBuilder => {
