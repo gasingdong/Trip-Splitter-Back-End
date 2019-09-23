@@ -8,6 +8,23 @@ import db from '../../database/db-config';
 
 const router = require('express').Router();
 
+/**
+ * @api {post} /api/auth/register Register new User
+ * @apiName RegisterUser
+ * @apiGroup Authorization
+ *
+ * @apiParam {String} username Username for the User, unique.
+ * @apiParam {String} password Password for the User.
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  username: "BarryAllen27",
+ *  password: "nightmonkey"
+ * }
+ *
+ * @apiSuccess (201) {Number} id ID of the new User.
+ *
+ */
 router.post(
   '/register',
   AuthMiddleware.validateUser,
@@ -23,6 +40,28 @@ router.post(
   }
 );
 
+/**
+ * @api {post} /api/auth/login Authorize User
+ * @apiName LoginUser
+ * @apiGroup Authorization
+ *
+ * @apiParam {String} username Username for the User.
+ * @apiParam {String} password Password for the User.
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  username: "BarryAllen27",
+ *  password: "nightmonkey"
+ * }
+ *
+ * @apiSuccess (200) {Object} token Object containing an authorization token for the User.
+ *
+ * @apiSuccessExample Successful-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *  token: "1925uijh384325214jsafjiaj2"
+ * }
+ */
 router.post(
   '/login',
   async (req: Request, res: Response, next: NextFunction) => {

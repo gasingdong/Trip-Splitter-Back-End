@@ -6,6 +6,40 @@ import { User } from '../../types';
 
 const router = require('express').Router();
 
+/**
+ * @api {get} /api/:username Request user information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {String} username User's unique username.
+ *
+ * @apiSuccess {Number}   id                ID of the User.
+ * @apiSuccess {String}   username          Username of the User.
+ * @apiSuccess {String}   photo             Profile photo location of the User.
+ * @apiSuccess {Object[]} trips             List of trips created by the User.
+ * @apiSuccess {Number}   trips.id          ID of the Trip.
+ * @apiSuccess {String}   trips.destination Destination or name for the Trip.
+ * @apiSuccess {Date}     trips.date        Date of the Trip.
+ * @apiSuccess {Boolean}  trips.active      Whether the Trip it active or inactive.
+ * @apiSuccess {Number}   trips.num_people  The number of people associated with the Trip.
+ *
+ * @apiSuccessExample Successful-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *  id: 1,
+ *  username: BarryAllen27
+ *  photo: null,
+ *  trips: [
+ *    {
+ *      id: 1,
+ *      destination: "Paris",
+ *      date: null,
+ *      active: true,
+ *      num_people: 4
+ *    }
+ *  ]
+ * }
+ */
 router.get(
   '/:username',
   UserMiddleware.validateUsername,
@@ -25,6 +59,24 @@ router
       next(err);
     }
   })
+  /**
+   * @api {post} /api/:username/trips Add trip for the User
+   * @apiName CreateTrip
+   * @apiGroup User
+   *
+   * @apiParam {String}   username        User's unique username.
+   * @apiParam {String}   [destination]   Trip's destination or name.
+   * @apiParam {Date}     [date]          Trip's date.
+   * @apiParam {Boolean}  [active=true]   Whether the Trip is active or not.
+   *
+   * @apiParamExample {json} Request-Example:
+   * {
+   *  destination: "Paris",
+   *  date: "2019-09-02"
+   * }
+   *
+   * @apiSuccess (201) {Number} id ID of the created Trip.
+   */
   .post(
     Restricted.restrictedByUser,
     async (req: Request, res: Response, next: NextFunction) => {
