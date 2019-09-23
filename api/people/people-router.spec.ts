@@ -11,8 +11,8 @@ beforeAll(async () => {
 });
 
 describe('people-router.js', () => {
-  describe('get person by id endpoint', () => {
-    it('should get right person from database', async () => {
+  describe('edit person', () => {
+    it('should edit person', async () => {
       const res = await request(server).get('/api/people/1');
       expect(res.status).toBe(200);
       expect(res.body.id).toBe(1);

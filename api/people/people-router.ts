@@ -7,8 +7,11 @@ const router = require('express').Router();
 router
   .route('/:id')
   .all(PeopleMiddleware.validatePersonId)
-  .get((req: Request, res: Response): void => {
-    res.status(200).json(req.person);
+  .put((req: Request, res: Response): void => {
+    res.status(404).json({});
+  })
+  .delete((req: Request, res: Response): void => {
+    res.status(404).json({});
   });
 
 export default router;

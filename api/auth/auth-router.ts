@@ -34,7 +34,7 @@ router.post(
           .where({ username })
           .first();
         if (user && bcryptjs.compareSync(password, user.password)) {
-          const token = Authenticate.generateToken(user);
+          const token = await Authenticate.generateToken(user);
           res.status(200).json({ token });
         } else {
           res.status(401).json(Codes.INVALID_CRED);
