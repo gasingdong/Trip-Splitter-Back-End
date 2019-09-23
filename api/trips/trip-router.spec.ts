@@ -57,11 +57,6 @@ describe('trip-router.js', () => {
         .set('Authorization', token)
         .send(testBody);
       expect(res.status).toBe(200);
-
-      const trip = await request(server)
-        .get('/api/trips/1')
-        .set('Authorization', token);
-      expect(trip.status).toBe(200);
     });
   });
 

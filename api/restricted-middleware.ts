@@ -37,7 +37,6 @@ const restrictedByTrip = (
 
   if (token) {
     jwt.verify(token, Secrets.JWT_SECRET, (err, decoded) => {
-      console.log('decoded', decoded);
       if (decoded) {
         const decodedToken = JSON.parse(JSON.stringify(decoded));
         const { trip } = req;
