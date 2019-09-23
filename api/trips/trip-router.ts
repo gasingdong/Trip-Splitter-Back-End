@@ -26,6 +26,16 @@ router
         next(err);
       }
     }
+  )
+  .delete(
+    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      try {
+        const deleted = await Trips.deleteTrip(Number(req.params.id));
+        res.status(200).json(deleted);
+      } catch (err) {
+        next(err);
+      }
+    }
   );
 
 router

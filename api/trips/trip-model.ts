@@ -17,7 +17,7 @@ interface TripUpdate {
   active?: boolean;
 }
 
-const getByTripId = (id: number): Promise<Trip> => {
+const getByTripId = (id: number): Promise<Trip | null> => {
   const tripQuery = db('trips as t')
     .join('users as u', 'u.id', 't.user_id')
     .select([
@@ -33,6 +33,10 @@ const getByTripId = (id: number): Promise<Trip> => {
   const expensesQuery = Expenses.getExpensesByTripId(id);
   return Promise.all([tripQuery, peopleQuery, expensesQuery]).then(
     async ([trip, people, expenses]) => {
+      if (!trip) {
+        return null;
+      }
+
       const filteredExpenses = await Promise.all(
         expenses.map(async expense => {
           const debts = await Debts.getDebtsByExpenseId(expense.id);

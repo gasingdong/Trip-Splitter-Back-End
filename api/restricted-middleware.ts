@@ -35,7 +35,9 @@ const restrictedByTrip = (
     jwt.verify(token, Secrets.JWT_SECRET, (err, decoded) => {
       if (decoded) {
         const decodedToken = JSON.parse(JSON.stringify(decoded));
-        if (err || !req.trip || decodedToken.username !== req.trip.created_by) {
+        if (!req.trip) {
+          res.status(404).json(Codes.NOT_FOUND);
+        } else if (err || decodedToken.username !== req.trip.created_by) {
           res.status(401).json(Codes.INVALID_CRED);
         } else {
           next();

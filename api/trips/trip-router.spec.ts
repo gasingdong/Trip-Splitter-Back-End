@@ -82,7 +82,7 @@ describe('trip-router.js', () => {
 
     it('should fail on invalid entry', async () => {
       const res = await request(server).get('/api/trips/999/people');
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(404);
     });
   });
 
@@ -135,9 +135,11 @@ describe('trip-router.js', () => {
       const deleted = await request(server)
         .del('/api/trips/1')
         .set('Authorization', token);
-      expect(deleted.status).toBe(201);
+      expect(deleted.status).toBe(200);
 
-      const trip = await request(server).get('/api/trips/1');
+      const trip = await request(server)
+        .get('/api/trips/1')
+        .set('Authorization', token);
       expect(trip.status).toBe(404);
     });
   });
