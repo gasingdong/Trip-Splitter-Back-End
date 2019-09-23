@@ -8,6 +8,18 @@ interface ExpenseInput {
   amount: number;
 }
 
+interface ExpenseUpdate {
+  person_id?: number;
+  name?: string;
+  amount?: number;
+}
+
+const getByExpenseId = (id: number): QueryBuilder<{}, Expense> => {
+  return db('expenses')
+    .where({ id })
+    .first<Expense>();
+};
+
 const addExpenseToTrip = (expense: ExpenseInput, id: number): QueryBuilder => {
   return db('expenses').insert(
     {
@@ -35,7 +47,22 @@ const getExpensesByTripId = (id: number): QueryBuilder<{}, Expense[]> => {
     ]);
 };
 
+const updateExpense = (expense: ExpenseUpdate, id: number): QueryBuilder => {
+  return db('expenses')
+    .where({ id })
+    .update(expense, 'id');
+};
+
+const deleteExpense = (id: number): QueryBuilder => {
+  return db('expenses')
+    .where({ id })
+    .del('id');
+};
+
 export default {
+  getByExpenseId,
   getExpensesByTripId,
   addExpenseToTrip,
+  updateExpense,
+  deleteExpense,
 };
