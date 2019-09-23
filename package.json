@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env DB_ENV=testing jest --watch",
+    "test": "cross-env NODE_ENV=testing jest --watch",
     "start": "ts-node index.ts",
     "server": "ts-node-dev index.ts"
   },
@@ -26,6 +26,7 @@
     "helmet": "^3.21.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.4",
+    "pg": "^7.12.1",
     "sqlite3": "^4.1.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
