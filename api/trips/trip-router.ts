@@ -7,12 +7,11 @@ const router = require('express').Router();
 
 router
   .route('/:id')
-  .all(TripMiddleware.validateTripId)
+  .all([TripMiddleware.validateTripId, Restricted.restrictedByTrip])
   .get((req: Request, res: Response): void => {
     res.status(200).json(req.trip);
   })
   .put(
-    Restricted.restrictedByTrip,
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const id = Number(req.params.id);
@@ -30,7 +29,7 @@ router
 
 router
   .route('/:id/people')
-  .all(TripMiddleware.validateTripId)
+  .all([TripMiddleware.validateTripId, Restricted.restrictedByTrip])
   .get(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
@@ -43,7 +42,6 @@ router
     }
   )
   .post(
-    Restricted.restrictedByTrip,
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const id = Number(req.params.id);

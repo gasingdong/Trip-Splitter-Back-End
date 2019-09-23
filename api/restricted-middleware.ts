@@ -33,11 +33,15 @@ const restrictedByTrip = (
 
   if (token) {
     jwt.verify(token, Secrets.JWT_SECRET, (err, decoded) => {
-      const decodedToken = JSON.parse(JSON.stringify(decoded));
-      if (err || !req.trip || decodedToken.username !== req.trip.created_by) {
-        res.status(401).json(Codes.INVALID_CRED);
+      if (decoded) {
+        const decodedToken = JSON.parse(JSON.stringify(decoded));
+        if (err || !req.trip || decodedToken.username !== req.trip.created_by) {
+          res.status(401).json(Codes.INVALID_CRED);
+        } else {
+          next();
+        }
       } else {
-        next();
+        res.status(401).json(Codes.INVALID_CRED);
       }
     });
   } else {
