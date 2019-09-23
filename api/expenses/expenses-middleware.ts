@@ -2,11 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import Codes from '../../config/codes';
 import Expenses from './expenses-model';
 import Trips from '../trips/trip-model';
-import { Expense } from '../../types';
+import Debts from '../debts/debts-model';
+import { Expense, Debt } from '../../types';
 
 declare module 'express-serve-static-core' {
   interface Request {
     expense?: Expense;
+    debt?: Debt;
   }
 }
 
@@ -41,6 +43,45 @@ const validateExpenseId = async (
   }
 };
 
+const validateDebtId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { id, personId } = req.params;
+
+  // Ensure there's an id
+  if (id && personId) {
+    try {
+      const existingDebt = await Debts.getDebtByPersonAndExpense(
+        Number(id),
+        Number(personId)
+      );
+
+      if (existingDebt) {
+        req.debt = existingDebt;
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        const { trip_id } = await Expenses.getByExpenseId(
+          existingDebt.expense_id
+        );
+        const trip = await Trips.getByTripId(trip_id);
+
+        if (trip) {
+          req.trip = trip;
+        }
+        next();
+      } else {
+        res.status(404).json(Codes.NOT_FOUND);
+      }
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.status(400).json(Codes.BAD_REQUEST);
+  }
+};
+
 export default {
   validateExpenseId,
+  validateDebtId,
 };
