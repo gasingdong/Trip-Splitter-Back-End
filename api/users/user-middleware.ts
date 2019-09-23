@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Codes from '../../config/codes';
 import Users from './user-model';
-import { User } from '../../types';
+import { Trip } from '../../types';
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -9,6 +9,7 @@ declare module 'express-serve-static-core' {
       id: number;
       username: string;
       photo: string;
+      trips: Trip[];
     };
   }
 }
@@ -30,6 +31,7 @@ const validateUsername = async (
           id: existingUser.id,
           username: existingUser.username,
           photo: existingUser.photo,
+          trips: existingUser.trips,
         };
         next();
       } else {

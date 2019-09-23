@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import UserMiddleware from './user-middleware';
 import Restricted from '../restricted-middleware';
-import Users from './user-model';
+import Trips from '../trips/trip-model';
 import { User } from '../../types';
 
 const router = require('express').Router();
@@ -19,7 +19,7 @@ router
   .all(UserMiddleware.validateUsername)
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const trips = await Users.getTripsByUsername(req.params.username);
+      const trips = await Trips.getTripsByUsername(req.params.username);
       res.status(200).json(trips);
     } catch (err) {
       next(err);
@@ -29,7 +29,7 @@ router
     Restricted.restrictedByUser,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const saved = await Users.addTripForUserId(
+        const saved = await Trips.addTripForUserId(
           req.body,
           (req.user as User).id
         );

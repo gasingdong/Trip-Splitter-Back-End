@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Trips from './trip-model';
 import TripMiddleware from './trip-middleware';
+import People from '../people/people-model';
 import Restricted from '../restricted-middleware';
 
 const router = require('express').Router();
@@ -34,7 +35,7 @@ router
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const id = Number(req.params.id);
-        const people = await Trips.getPeopleByTripId(id);
+        const people = await People.getPeopleByTripId(id);
         res.status(200).json(people);
       } catch (err) {
         next(err);
@@ -45,7 +46,7 @@ router
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const id = Number(req.params.id);
-        const saved = await Trips.addPersonToTrip(req.body, id);
+        const saved = await People.addPersonToTrip(req.body, id);
         res.status(201).json(saved);
       } catch (err) {
         next(err);

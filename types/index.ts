@@ -3,6 +3,7 @@ export interface User {
   username: string;
   password: string;
   photo: string;
+  trips: Trip[];
 }
 
 export interface Trip {
