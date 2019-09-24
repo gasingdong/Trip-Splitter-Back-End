@@ -18,26 +18,26 @@ router
    *
    * @apiParam {Number} id Trip's unique ID.
    *
-   * @apiSuccess {Number}   id                          ID of the Trip.
-   * @apiSuccess {String}   destination                 Destination or name of the Trip.
-   * @apiSuccess {Date}     date                        Date of the Trip.
-   * @apiSuccess {Boolean}  active                      Whether the Trip is active or not.
-   * @apiSuccess {Object[]} people                      List of People on the Trip.
-   * @apiSuccess {Number}   people.id                   ID of the Person.
-   * @apiSuccess {String}   people.first_name           First name of the Person.
-   * @apiSuccess {String}   people.last_name            Last name of the Person.
-   * @apiSuccess {Number}   people.user_id              The ID of the User associated with the Person.
-   * @apiSuccess {Object[]} expenses                    List of Expenses on the Trip.
-   * @apiSuccess {Number}   expenses.id                 ID of the Expense.
-   * @apiSuccess {String}   expenses.name               Name or description of the Expense.
-   * @apiSuccess {Number}   expenses.amount             Amount paid for the Expense.
-   * @apiSuccess {Number}   expenses.person_id          ID of the Person who paid for the Expense.
-   * @apiSuccess {String}   expenses.person_name        First name and last name of the Person who paid for the Expense.
-   * @apiSuccess {Object[]} expenses.debts              List of Debts owed for the Expense.
-   * @apiSuccess {Number}   expenses.debts.expense_id   ID of the Expense associated with the Debt.
-   * @apiSuccess {Number}   expenses.debts.person_id    ID of the Person associated with the Debt.
-   * @apiSuccess {String}   expenses.debts.person_name  First name and last name of the Person who paid for the Expense.
-   * @apiSuccess {Number}   expenses.debts.amount       Amount owed for the Debt.
+   * @apiSuccess (params)   {Number}    id                          ID of the Trip.
+   * @apiSuccess (content)  {String}    destination                 Destination or name of the Trip.
+   * @apiSuccess (content)  {Date}      date                        Date of the Trip.
+   * @apiSuccess (content)  {Boolean}   active                      Whether the Trip is active or not.
+   * @apiSuccess (content)  {Object[]}  people                      List of People on the Trip.
+   * @apiSuccess (content)  {Number}    people.id                   ID of the Person.
+   * @apiSuccess (content)  {String}    people.first_name           First name of the Person.
+   * @apiSuccess (content)  {String}    people.last_name            Last name of the Person.
+   * @apiSuccess (content)  {Number}    people.user_id              The ID of the User associated with the Person.
+   * @apiSuccess (content)  {Object[]}  expenses                    List of Expenses on the Trip.
+   * @apiSuccess (content)  {Number}    expenses.id                 ID of the Expense.
+   * @apiSuccess (content)  {String}    expenses.name               Name or description of the Expense.
+   * @apiSuccess (content)  {Number}    expenses.amount             Amount paid for the Expense.
+   * @apiSuccess (content)  {Number}    expenses.person_id          ID of the Person who paid for the Expense.
+   * @apiSuccess (content)  {String}    expenses.person_name        First name and last name of the Person who paid for the Expense.
+   * @apiSuccess (content)  {Object[]}  expenses.debts              List of Debts owed for the Expense.
+   * @apiSuccess (content)  {Number}    expenses.debts.expense_id   ID of the Expense associated with the Debt.
+   * @apiSuccess (content)  {Number}    expenses.debts.person_id    ID of the Person associated with the Debt.
+   * @apiSuccess (content)  {String}    expenses.debts.person_name  First name and last name of the Person who paid for the Expense.
+   * @apiSuccess (content)  {Number}    expenses.debts.amount       Amount owed for the Debt.
    *
    * @apiSuccessExample {json} Successful-Response:
    * HTTP/1.1 200 OK
@@ -89,10 +89,10 @@ router
    * @apiGroup Trip
    * @apiPermission Trip Editor
    *
-   * @apiParam {Number}   id            Trip's unique ID.
-   * @apiParam {String}   [destination] Destination or name of the Trip.
-   * @apiParam {Date}     [date]        Date of the Trip.
-   * @apiParam {Boolean}  [active]      Whether the Trip is active or not.
+   * @apiParam (params)   {Number}   id            Trip's unique ID.
+   * @apiParam (request)  {String}   [destination] Destination or name of the Trip.
+   * @apiParam (request)  {Date}     [date]        Date of the Trip.
+   * @apiParam (request)  {Boolean}  [active]      Whether the Trip is active or not.
    *
    * @apiParamExample {json} Request-Example:
    * {
@@ -118,7 +118,7 @@ router
     }
   )
   /**
-   * @api {put} /api/trips/:id Delete Trip
+   * @api {delete} /api/trips/:id Delete Trip
    * @apiName DeleteTrip
    * @apiGroup Trip
    * @apiPermission Trip Editor
@@ -144,15 +144,13 @@ router
  * @apiGroup Trip
  * @apiPermission Trip Editor
  *
- * @apiParam {Number} id          Trip's unique ID.
- * @apiParam {Number} trip_id     Trip's unique ID.
- * @apiParam {String} first_name  Person's first name.
- * @apiParam {String} [last_name] Person's last name.
- * @apiParam {Number} [user_id]   Person's associated User ID.
+ * @apiParam (params)   {Number} id          Trip's unique ID.
+ * @apiParam (request)  {String} first_name  Person's first name.
+ * @apiParam (request)  {String} [last_name] Person's last name.
+ * @apiParam (request)  {Number} [user_id]   Person's associated User ID.
  *
  * @apiParamExample {json} Request-Example:
  * {
- *  trip_id: 2,
  *  first_name: "Steven",
  *  last_name: "Williamson"
  * }
@@ -179,15 +177,13 @@ router.post(
  * @apiGroup Trip
  * @apiPermission Trip Editor
  *
- * @apiParam {Number} id          Trip's unique ID.
- * @apiParam {Number} trip_id     Trip's unique ID.
- * @apiParam {Number} person_id   ID of the Person who paid for the Expense.
- * @apiParam {String} name        Name of the Expense.
- * @apiParam {Number} amount      Amount paid for the Expense.
+ * @apiParam (params)   {Number} id          Trip's unique ID.
+ * @apiParam (request)  {Number} person_id   ID of the Person who paid for the Expense.
+ * @apiParam (request)  {String} name        Name of the Expense.
+ * @apiParam (request)  {Number} amount      Amount paid for the Expense.
  *
  * @apiParamExample {json} Request-Example:
  * {
- *  trip_id: 2,
  *  person_id: 4,
  *  name: "Uber",
  *  amount: 20.12

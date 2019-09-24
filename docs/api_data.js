@@ -135,11 +135,187 @@ define({ "api": [
     "name": ""
   },
   {
+    "type": "delete",
+    "url": "/api/expenses/:id/debts/:person_id",
+    "title": "Delete Debt",
+    "name": "DeleteDebt",
+    "group": "Debts",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Expense's unique ID.</p>"
+          },
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "person_id",
+            "description": "<p>Person's unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of deleted records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/expenses/expenses-router.ts",
+    "groupTitle": "Debts"
+  },
+  {
+    "type": "put",
+    "url": "/api/expenses/:id/debts/:person_id",
+    "title": "Edit Debt information",
+    "name": "EditDebt",
+    "group": "Debts",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Expense's unique ID.</p>"
+          },
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "person_id",
+            "description": "<p>Person's unique ID.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": true,
+            "field": "amount",
+            "description": "<p>Amount owed for the Debt.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n amount: 10.65\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of updated records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/expenses/expenses-router.ts",
+    "groupTitle": "Debts"
+  },
+  {
     "type": "post",
-    "url": "/api/trips/:id/expenses",
-    "title": "Add Expense for the Trip",
-    "name": "AddExpense",
-    "group": "Trip",
+    "url": "/api/expenses/:id/debts",
+    "title": "Add Debt for the Expense",
+    "name": "AddDebt",
+    "group": "Expenses",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Expense's unique ID.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": false,
+            "field": "person_id",
+            "description": "<p>ID of the Person who owes the Debt.</p>"
+          },
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>Amount owed for the Debt.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n person_id: 5,\n amount: 10.14\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the created Debt.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/expenses/expenses-router.ts",
+    "groupTitle": "Expenses"
+  },
+  {
+    "type": "delete",
+    "url": "/api/expenses/:id",
+    "title": "Delete Expense",
+    "name": "DeleteExpense",
+    "group": "Expenses",
     "permission": [
       {
         "name": "Trip Editor"
@@ -153,31 +329,250 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>Trip's unique ID.</p>"
+            "description": "<p>Expense's unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of deleted records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/expenses/expenses-router.ts",
+    "groupTitle": "Expenses"
+  },
+  {
+    "type": "put",
+    "url": "/api/expenses/:id",
+    "title": "Edit Expense information",
+    "name": "EditExpense",
+    "group": "Expenses",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Expense's unique ID.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": true,
+            "field": "person_id",
+            "description": "<p>ID of the Person who paid for the Expense.</p>"
           },
+          {
+            "group": "request",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Name of the Expense.</p>"
+          },
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": true,
+            "field": "amount",
+            "description": "<p>Amount paid for the Expense.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n name: \"Jan\",\n amount: 50.95\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of updated records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/expenses/expenses-router.ts",
+    "groupTitle": "Expenses"
+  },
+  {
+    "type": "delete",
+    "url": "/api/people/:id",
+    "title": "Delete Person",
+    "name": "DeletePerson",
+    "group": "People",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
           {
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "trip_id",
-            "description": "<p>Trip's unique ID.</p>"
+            "field": "id",
+            "description": "<p>Person's unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of deleted records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/people/people-router.ts",
+    "groupTitle": "People"
+  },
+  {
+    "type": "put",
+    "url": "/api/people/:id",
+    "title": "Edit Person information",
+    "name": "EditPerson",
+    "group": "People",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Person's unique ID.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "String",
+            "optional": true,
+            "field": "first_name",
+            "description": "<p>Person's first name.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
+            "type": "String",
+            "optional": true,
+            "field": "last_name",
+            "description": "<p>Person's last name.</p>"
+          },
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": true,
+            "field": "user_id",
+            "description": "<p>User ID associated with the Person.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n first_name: \"Dill\",\n last_name: \"Pickles\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of updated records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/people/people-router.ts",
+    "groupTitle": "People"
+  },
+  {
+    "type": "post",
+    "url": "/api/trips/:id/expenses",
+    "title": "Add Expense for the Trip",
+    "name": "AddExpense",
+    "group": "Trip",
+    "permission": [
+      {
+        "name": "Trip Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Trip's unique ID.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
             "type": "Number",
             "optional": false,
             "field": "person_id",
             "description": "<p>ID of the Person who paid for the Expense.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "String",
             "optional": false,
             "field": "name",
             "description": "<p>Name of the Expense.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "Number",
             "optional": false,
             "field": "amount",
@@ -188,7 +583,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n trip_id: 2,\n person_id: 4,\n name: \"Uber\",\n amount: 20.12\n}",
+          "content": "{\n person_id: 4,\n name: \"Uber\",\n amount: 20.12\n}",
           "type": "json"
         }
       ]
@@ -223,37 +618,32 @@ define({ "api": [
     ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "params": [
           {
-            "group": "Parameter",
+            "group": "params",
             "type": "Number",
             "optional": false,
             "field": "id",
             "description": "<p>Trip's unique ID.</p>"
-          },
+          }
+        ],
+        "request": [
           {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "trip_id",
-            "description": "<p>Trip's unique ID.</p>"
-          },
-          {
-            "group": "Parameter",
+            "group": "request",
             "type": "String",
             "optional": false,
             "field": "first_name",
             "description": "<p>Person's first name.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "String",
             "optional": true,
             "field": "last_name",
             "description": "<p>Person's last name.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "Number",
             "optional": true,
             "field": "user_id",
@@ -264,7 +654,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n trip_id: 2,\n first_name: \"Steven\",\n last_name: \"Williamson\"\n}",
+          "content": "{\n first_name: \"Steven\",\n last_name: \"Williamson\"\n}",
           "type": "json"
         }
       ]
@@ -287,7 +677,7 @@ define({ "api": [
     "groupTitle": "Trip"
   },
   {
-    "type": "put",
+    "type": "delete",
     "url": "/api/trips/:id",
     "title": "Delete Trip",
     "name": "DeleteTrip",
@@ -340,30 +730,32 @@ define({ "api": [
     ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "params": [
           {
-            "group": "Parameter",
+            "group": "params",
             "type": "Number",
             "optional": false,
             "field": "id",
             "description": "<p>Trip's unique ID.</p>"
-          },
+          }
+        ],
+        "request": [
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "String",
             "optional": true,
             "field": "destination",
             "description": "<p>Destination or name of the Trip.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "Date",
             "optional": true,
             "field": "date",
             "description": "<p>Date of the Trip.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "Boolean",
             "optional": true,
             "field": "active",
@@ -422,142 +814,144 @@ define({ "api": [
     },
     "success": {
       "fields": {
-        "Success 200": [
+        "params": [
           {
-            "group": "Success 200",
+            "group": "params",
             "type": "Number",
             "optional": false,
             "field": "id",
             "description": "<p>ID of the Trip.</p>"
-          },
+          }
+        ],
+        "content": [
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "String",
             "optional": false,
             "field": "destination",
             "description": "<p>Destination or name of the Trip.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Date",
             "optional": false,
             "field": "date",
             "description": "<p>Date of the Trip.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Boolean",
             "optional": false,
             "field": "active",
             "description": "<p>Whether the Trip is active or not.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Object[]",
             "optional": false,
             "field": "people",
             "description": "<p>List of People on the Trip.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "people.id",
             "description": "<p>ID of the Person.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "String",
             "optional": false,
             "field": "people.first_name",
             "description": "<p>First name of the Person.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "String",
             "optional": false,
             "field": "people.last_name",
             "description": "<p>Last name of the Person.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "people.user_id",
             "description": "<p>The ID of the User associated with the Person.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Object[]",
             "optional": false,
             "field": "expenses",
             "description": "<p>List of Expenses on the Trip.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "expenses.id",
             "description": "<p>ID of the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "String",
             "optional": false,
             "field": "expenses.name",
             "description": "<p>Name or description of the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "expenses.amount",
             "description": "<p>Amount paid for the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "expenses.person_id",
             "description": "<p>ID of the Person who paid for the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "String",
             "optional": false,
             "field": "expenses.person_name",
             "description": "<p>First name and last name of the Person who paid for the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Object[]",
             "optional": false,
             "field": "expenses.debts",
             "description": "<p>List of Debts owed for the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "expenses.debts.expense_id",
             "description": "<p>ID of the Expense associated with the Debt.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "expenses.debts.person_id",
             "description": "<p>ID of the Person associated with the Debt.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "String",
             "optional": false,
             "field": "expenses.debts.person_name",
             "description": "<p>First name and last name of the Person who paid for the Expense.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "content",
             "type": "Number",
             "optional": false,
             "field": "expenses.debts.amount",

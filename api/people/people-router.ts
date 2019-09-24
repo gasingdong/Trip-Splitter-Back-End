@@ -8,6 +8,25 @@ const router = require('express').Router();
 router
   .route('/:id')
   .all([PeopleMiddleware.validatePersonId, Restricted.restrictedByTrip])
+  /**
+   * @api {put} /api/people/:id Edit Person information
+   * @apiName EditPerson
+   * @apiGroup People
+   * @apiPermission Trip Editor
+   *
+   * @apiParam (params)   {Number} id            Person's unique ID.
+   * @apiParam (request)  {String} [first_name]  Person's first name.
+   * @apiParam (request)  {String} [last_name]   Person's last name.
+   * @apiParam (request)  {Number} [user_id]     User ID associated with the Person.
+   *
+   * @apiParamExample {json} Request-Example:
+   * {
+   *  first_name: "Dill",
+   *  last_name: "Pickles"
+   * }
+   *
+   * @apiSuccess (200) {Number} num Number of updated records.
+   */
   .put(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
@@ -24,6 +43,16 @@ router
       }
     }
   )
+  /**
+   * @api {delete} /api/people/:id Delete Person
+   * @apiName DeletePerson
+   * @apiGroup People
+   * @apiPermission Trip Editor
+   *
+   * @apiParam {Number} id Person's unique ID.
+   *
+   * @apiSuccess (200) {Number} num Number of deleted records.
+   */
   .delete(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
