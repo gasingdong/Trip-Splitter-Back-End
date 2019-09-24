@@ -19,6 +19,7 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+server.use('/api/docs', express.static('./docs'));
 server.use('/api/auth', AuthRouter);
 server.use('/api/users', UserRouter);
 server.use('/api/trips', TripRouter);

@@ -11,7 +11,7 @@ router
   .route('/:id')
   .all([TripMiddleware.validateTripId, Restricted.restrictedByTrip])
   /**
-   * @api {get} /api/trips/:id Request Trip information
+   * @api {get} /trips/:id Request Trip information
    * @apiName GetTrip
    * @apiGroup Trip
    * @apiPermission Trip Editor
@@ -84,7 +84,7 @@ router
     res.status(200).json(req.trip);
   })
   /**
-   * @api {put} /api/trips/:id Edit Trip information
+   * @api {put} /trips/:id Edit Trip information
    * @apiName EditTrip
    * @apiGroup Trip
    * @apiPermission Trip Editor
@@ -118,7 +118,7 @@ router
     }
   )
   /**
-   * @api {delete} /api/trips/:id Delete Trip
+   * @api {delete} /trips/:id Delete Trip
    * @apiName DeleteTrip
    * @apiGroup Trip
    * @apiPermission Trip Editor
@@ -139,7 +139,7 @@ router
   );
 
 /**
- * @api {post} /api/trips/:id/people Add Person for the Trip
+ * @api {post} /trips/:id/people Add Person for the Trip
  * @apiName AddPerson
  * @apiGroup Trip
  * @apiPermission Trip Editor
@@ -172,7 +172,7 @@ router.post(
 );
 
 /**
- * @api {post} /api/trips/:id/expenses Add Expense for the Trip
+ * @api {post} /trips/:id/expenses Add Expense for the Trip
  * @apiName AddExpense
  * @apiGroup Trip
  * @apiPermission Trip Editor

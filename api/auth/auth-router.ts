@@ -9,7 +9,7 @@ import db from '../../database/db-config';
 const router = require('express').Router();
 
 /**
- * @api {post} /api/auth/register Register new User
+ * @api {post} /auth/register Register new User
  * @apiName RegisterUser
  * @apiGroup Authorization
  *
@@ -41,7 +41,7 @@ router.post(
 );
 
 /**
- * @api {post} /api/auth/login Authorize User
+ * @api {post} /auth/login Authorize User
  * @apiName LoginUser
  * @apiGroup Authorization
  *

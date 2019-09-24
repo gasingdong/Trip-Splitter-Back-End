@@ -10,7 +10,7 @@ router
   .route('/:id')
   .all([ExpensesMiddleware.validateExpenseId, Restricted.restrictedByTrip])
   /**
-   * @api {put} /api/expenses/:id Edit Expense information
+   * @api {put} /expenses/:id Edit Expense information
    * @apiName EditExpense
    * @apiGroup Expenses
    * @apiPermission Trip Editor
@@ -45,7 +45,7 @@ router
     }
   )
   /**
-   * @api {delete} /api/expenses/:id Delete Expense
+   * @api {delete} /expenses/:id Delete Expense
    * @apiName DeleteExpense
    * @apiGroup Expenses
    * @apiPermission Trip Editor
@@ -66,7 +66,7 @@ router
   );
 
 /**
- * @api {post} /api/expenses/:id/debts Add Debt for the Expense
+ * @api {post} /expenses/:id/debts Add Debt for the Expense
  * @apiName AddDebt
  * @apiGroup Expenses
  * @apiPermission Trip Editor
@@ -101,7 +101,7 @@ router
   .route('/:id/debts/:personId')
   .all([ExpensesMiddleware.validateDebtId, Restricted.restrictedByTrip])
   /**
-   * @api {put} /api/expenses/:id/debts/:person_id Edit Debt information
+   * @api {put} /expenses/:id/debts/:person_id Edit Debt information
    * @apiName EditDebt
    * @apiGroup Debts
    * @apiPermission Trip Editor
@@ -132,7 +132,7 @@ router
     }
   )
   /**
-   * @api {delete} /api/expenses/:id/debts/:person_id Delete Debt
+   * @api {delete} /expenses/:id/debts/:person_id Delete Debt
    * @apiName DeleteDebt
    * @apiGroup Debts
    * @apiPermission Trip Editor

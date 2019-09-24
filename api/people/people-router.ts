@@ -9,7 +9,7 @@ router
   .route('/:id')
   .all([PeopleMiddleware.validatePersonId, Restricted.restrictedByTrip])
   /**
-   * @api {put} /api/people/:id Edit Person information
+   * @api {put} /people/:id Edit Person information
    * @apiName EditPerson
    * @apiGroup People
    * @apiPermission Trip Editor
@@ -44,7 +44,7 @@ router
     }
   )
   /**
-   * @api {delete} /api/people/:id Delete Person
+   * @api {delete} /people/:id Delete Person
    * @apiName DeletePerson
    * @apiGroup People
    * @apiPermission Trip Editor

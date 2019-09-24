@@ -7,7 +7,7 @@ import { User } from '../../types';
 const router = require('express').Router();
 
 /**
- * @api {get} /api/:username Request User information
+ * @api {get} /:username Request User information
  * @apiName GetUser
  * @apiGroup User
  *
@@ -60,7 +60,7 @@ router
     }
   })
   /**
-   * @api {post} /api/:username/trips Add Trip for the User
+   * @api {post} /:username/trips Add Trip for the User
    * @apiName CreateTrip
    * @apiGroup User
    * @apiPermission User
