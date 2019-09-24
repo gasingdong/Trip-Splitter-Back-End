@@ -7,7 +7,7 @@ import { User } from '../../types';
 const router = require('express').Router();
 
 /**
- * @api {get} /api/:username Request user information
+ * @api {get} /api/:username Request User information
  * @apiName GetUser
  * @apiGroup User
  *
@@ -27,7 +27,7 @@ const router = require('express').Router();
  * HTTP/1.1 200 OK
  * {
  *  id: 1,
- *  username: BarryAllen27
+ *  username: "BarryAllen27"
  *  photo: null,
  *  trips: [
  *    {
@@ -60,9 +60,10 @@ router
     }
   })
   /**
-   * @api {post} /api/:username/trips Add trip for the User
+   * @api {post} /api/:username/trips Add Trip for the User
    * @apiName CreateTrip
    * @apiGroup User
+   * @apiPermission User
    *
    * @apiParam {String}   username        User's unique username.
    * @apiParam {String}   [destination]   Trip's destination or name.

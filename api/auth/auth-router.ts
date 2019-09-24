@@ -22,7 +22,7 @@ const router = require('express').Router();
  *  password: "nightmonkey"
  * }
  *
- * @apiSuccess (201) {Number} id ID of the new User.
+ * @apiSuccess (201) {Number[]} id ID of the new User.
  *
  */
 router.post(
@@ -54,7 +54,7 @@ router.post(
  *  password: "nightmonkey"
  * }
  *
- * @apiSuccess (200) {Object} token Object containing an authorization token for the User.
+ * @apiSuccess {String} token An authorization token for the User.
  *
  * @apiSuccessExample Successful-Response:
  * HTTP/1.1 200 OK
