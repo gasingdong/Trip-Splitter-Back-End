@@ -1,5 +1,4 @@
 # Trip Split Back-End
------------
 ## Project Links
 * [API Documentation](https://bd-trip-split.herokuapp.com/api/docs)
 * [Project Canvas](https://docs.google.com/document/d/1vFAef5K2NTOUZsUn5fWRLBOrrvhE_DAcsiTECyzRcQg/edit?usp=sharing)
