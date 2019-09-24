@@ -107,6 +107,34 @@ define({ "api": [
     "groupTitle": "Authorization"
   },
   {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "./docs/main.js",
+    "group": "D__Programming_Lambda_School_Back_End_docs_main_js",
+    "groupTitle": "D__Programming_Lambda_School_Back_End_docs_main_js",
+    "name": ""
+  },
+  {
     "type": "delete",
     "url": "/expenses/:id/debts/:person_id",
     "title": "Delete Debt",
@@ -997,17 +1025,13 @@ define({ "api": [
       ]
     },
     "success": {
-      "fields": {
-        "201": [
-          {
-            "group": "201",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>ID of the created Trip.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "Successful-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n id: 1,\n username: \"BarryAllen27\"\n photo: null,\n trips: [\n   {\n     id: 1,\n     destination: \"Paris\",\n     date: null,\n     active: true,\n     num_people: 4\n   }\n ]\n}",
+          "type": "json"
+        }
+      ]
     },
     "version": "0.0.0",
     "filename": "./api/users/user-router.ts",

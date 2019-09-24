@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import UserMiddleware from './user-middleware';
 import Restricted from '../restricted-middleware';
 import Trips from '../trips/trip-model';
+import Users from './user-model';
 import { User } from '../../types';
 
 const router = require('express').Router();
@@ -76,17 +77,41 @@ router
    *  date: "2019-09-02"
    * }
    *
-   * @apiSuccess (201) {Number} id ID of the created Trip.
+   * @apiSuccessExample Successful-Response:
+   * HTTP/1.1 201 OK
+   * {
+   *  id: 1,
+   *  username: "BarryAllen27"
+   *  photo: null,
+   *  trips: [
+   *    {
+   *      id: 1,
+   *      destination: "Paris",
+   *      date: null,
+   *      active: true,
+   *      num_people: 4
+   *    }
+   *  ]
+   * }
    */
   .post(
     Restricted.restrictedByUser,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const saved = await Trips.addTripForUserId(
-          req.body,
-          (req.user as User).id
-        );
-        res.status(201).json(saved);
+        const user = req.user as User;
+        await Trips.addTripForUserId(req.body, user.id);
+        const updatedUser = await Users.getByUsername(user.username);
+
+        if (updatedUser) {
+          res.status(201).json({
+            id: updatedUser.id,
+            username: updatedUser.username,
+            photo: updatedUser.photo,
+            trips: updatedUser.trips,
+          });
+        } else {
+          throw new Error();
+        }
       } catch (err) {
         next(err);
       }
