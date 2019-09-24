@@ -9,6 +9,25 @@ const router = require('express').Router();
 router
   .route('/:id')
   .all([ExpensesMiddleware.validateExpenseId, Restricted.restrictedByTrip])
+  /**
+   * @api {put} /expenses/:id Edit Expense information
+   * @apiName EditExpense
+   * @apiGroup Expenses
+   * @apiPermission Trip Editor
+   *
+   * @apiParam (params)   {Number}  id           Expense's unique ID.
+   * @apiParam (request)  {Number}  [person_id]  ID of the Person who paid for the Expense.
+   * @apiParam (request)  {String}  [name]       Name of the Expense.
+   * @apiParam (request)  {Number}  [amount]     Amount paid for the Expense.
+   *
+   * @apiParamExample {json} Request-Example:
+   * {
+   *  name: "Jan",
+   *  amount: 50.95
+   * }
+   *
+   * @apiSuccess (200) {Number} num Number of updated records.
+   */
   .put(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
@@ -25,6 +44,16 @@ router
       }
     }
   )
+  /**
+   * @api {delete} /expenses/:id Delete Expense
+   * @apiName DeleteExpense
+   * @apiGroup Expenses
+   * @apiPermission Trip Editor
+   *
+   * @apiParam {Number} id Expense's unique ID.
+   *
+   * @apiSuccess (200) {Number} num Number of deleted records.
+   */
   .delete(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
@@ -36,6 +65,24 @@ router
     }
   );
 
+/**
+ * @api {post} /expenses/:id/debts Add Debt for the Expense
+ * @apiName AddDebt
+ * @apiGroup Expenses
+ * @apiPermission Trip Editor
+ *
+ * @apiParam (params)   {Number} id          Expense's unique ID.
+ * @apiParam (request)  {Number} person_id   ID of the Person who owes the Debt.
+ * @apiParam (request)  {Number} amount      Amount owed for the Debt.
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  person_id: 5,
+ *  amount: 10.14
+ * }
+ *
+ * @apiSuccess (201) {Number} id ID of the created Debt.
+ */
 router.post(
   '/:id/debts',
   [ExpensesMiddleware.validateExpenseId, Restricted.restrictedByTrip],
@@ -53,6 +100,23 @@ router.post(
 router
   .route('/:id/debts/:personId')
   .all([ExpensesMiddleware.validateDebtId, Restricted.restrictedByTrip])
+  /**
+   * @api {put} /expenses/:id/debts/:person_id Edit Debt information
+   * @apiName EditDebt
+   * @apiGroup Debts
+   * @apiPermission Trip Editor
+   *
+   * @apiParam (params)   {Number}  id          Expense's unique ID.
+   * @apiParam (params)   {Number}  person_id   Person's unique ID.
+   * @apiParam (request)  {Number}  [amount]    Amount owed for the Debt.
+   *
+   * @apiParamExample {json} Request-Example:
+   * {
+   *  amount: 10.65
+   * }
+   *
+   * @apiSuccess (200) {Number} num Number of updated records.
+   */
   .put(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
@@ -67,6 +131,17 @@ router
       }
     }
   )
+  /**
+   * @api {delete} /expenses/:id/debts/:person_id Delete Debt
+   * @apiName DeleteDebt
+   * @apiGroup Debts
+   * @apiPermission Trip Editor
+   *
+   * @apiParam (params)   {Number}  id          Expense's unique ID.
+   * @apiParam (params)   {Number}  person_id   Person's unique ID.
+   *
+   * @apiSuccess (200) {Number} num Number of deleted records.
+   */
   .delete(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
