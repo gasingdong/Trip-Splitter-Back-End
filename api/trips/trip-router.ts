@@ -4,6 +4,7 @@ import TripMiddleware from './trip-middleware';
 import People from '../people/people-model';
 import Restricted from '../restricted-middleware';
 import Expenses from '../expenses/expenses-model';
+import Codes from '../../config/codes';
 
 const router = require('express').Router();
 
@@ -163,8 +164,16 @@ router.post(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = Number(req.params.id);
-      const saved = await People.addPersonToTrip(req.body, id);
-      res.status(201).json(saved);
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      const { first_name } = req.body;
+
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      if (first_name) {
+        const saved = await People.addPersonToTrip(req.body, id);
+        res.status(201).json(saved);
+      } else {
+        res.status(400).json(Codes.BAD_REQUEST);
+      }
     } catch (err) {
       next(err);
     }
@@ -197,8 +206,16 @@ router.post(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = Number(req.params.id);
-      const saved = await Expenses.addExpenseToTrip(req.body, id);
-      res.status(201).json(saved);
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      const { person_id, name, amount } = req.body;
+
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      if (person_id && name && amount) {
+        const saved = await Expenses.addExpenseToTrip(req.body, id);
+        res.status(201).json(saved);
+      } else {
+        res.status(400).json(Codes.BAD_REQUEST);
+      }
     } catch (err) {
       next(err);
     }
