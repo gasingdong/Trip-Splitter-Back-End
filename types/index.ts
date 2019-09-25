@@ -4,6 +4,12 @@ export interface User {
   password: string;
   photo: string;
   trips: Trip[];
+  friends: Friend[];
+}
+
+export interface Friend {
+  friend_id: number;
+  username: string;
 }
 
 export interface Trip {

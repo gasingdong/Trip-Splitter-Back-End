@@ -14,6 +14,10 @@ export async function seed(knex: Knex): Promise<void> {
           username: Testing.TEST_USER,
           password: bcryptjs.hashSync(Testing.TEST_PASS),
         },
+        {
+          username: 'Dummy',
+          password: bcryptjs.hashSync('dummy'),
+        },
       ]);
     });
 }

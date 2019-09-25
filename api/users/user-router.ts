@@ -3,6 +3,7 @@ import UserMiddleware from './user-middleware';
 import Restricted from '../restricted-middleware';
 import Trips from '../trips/trip-model';
 import Users from './user-model';
+import Friends from '../friends/friends-model';
 import { User } from '../../types';
 
 const router = require('express').Router();
@@ -23,6 +24,9 @@ const router = require('express').Router();
  * @apiSuccess {Date}     trips.date        Date of the Trip.
  * @apiSuccess {Boolean}  trips.active      Whether the Trip it active or inactive.
  * @apiSuccess {Number}   trips.num_people  The number of people associated with the Trip.
+ * @apiSuccess {Object[]} friends           List of friends of the User.
+ * @apiSuccess {Number}   friends.id        User ID of the Friend.
+ * @apiSuccess {String}   friends.username  Username of the Friend.
  *
  * @apiSuccessExample Successful-Response:
  * HTTP/1.1 200 OK
@@ -37,6 +41,12 @@ const router = require('express').Router();
  *      date: null,
  *      active: true,
  *      num_people: 4
+ *    }
+ *  ],
+ *  friends: [
+ *    {
+ *      id: 3,
+ *      username: "SpiderPig"
  *    }
  *  ]
  * }
@@ -66,10 +76,10 @@ router
    * @apiGroup User
    * @apiPermission User
    *
-   * @apiParam {String}   username        User's unique username.
-   * @apiParam {String}   [destination]   Trip's destination or name.
-   * @apiParam {Date}     [date]          Trip's date.
-   * @apiParam {Boolean}  [active=true]   Whether the Trip is active or not.
+   * @apiParam (params)   {String}   username        User's unique username.
+   * @apiParam (request)  {String}   [destination]   Trip's destination or name.
+   * @apiParam (request)  {Date}     [date]          Trip's date.
+   * @apiParam (request)  {Boolean}  [active=true]   Whether the Trip is active or not.
    *
    * @apiParamExample {json} Request-Example:
    * {
@@ -117,5 +127,69 @@ router
       }
     }
   );
+
+/**
+ * @api {post} /:username/friends Add Friend for the User
+ * @apiName CreateFriend
+ * @apiGroup User
+ * @apiPermission User
+ *
+ * @apiParam (params)   {String}   username User's unique username.
+ * @apiParam (request)  {String}   id       Friend's unique User ID.
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  id: 10
+ * }
+ *
+ * @apiSuccess (201) {Number} id ID of the added Friend.
+ */
+router.post(
+  '/:username/friends',
+  [UserMiddleware.validateUsername, Restricted.restrictedByUser],
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const saved = await Friends.addFriendToUser(
+        (req.user as User).id,
+        req.body.id
+      );
+      res.status(201).json(saved);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+/**
+ * @api {delete} /:username/friends/:id Delete Friend
+ * @apiName DeleteFriend
+ * @apiGroup User
+ * @apiPermission User
+ *
+ * @apiParam (params)   {String}   username User's unique username.
+ * @apiParam (request)  {String}   id       Friend's unique User ID.
+ *
+ * @apiSuccess (200) {Number} num Number of deleted records.
+ */
+router.delete(
+  '/:username/friends/:friendId',
+  [
+    UserMiddleware.validateUsername,
+    Restricted.restrictedByUser,
+    UserMiddleware.validateFriend,
+    UserMiddleware.validateFriendship,
+  ],
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const deleted = await Friends.deleteFriend(
+        (req.user as User).id,
+        Number(req.params.friendId)
+      );
+      res.status(200).json(deleted);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 export default router;
