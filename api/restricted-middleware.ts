@@ -42,10 +42,7 @@ const restrictedByTrip = (
         const { trip } = req;
         if (!trip) {
           res.status(404).json(Codes.NOT_FOUND);
-        } else if (
-          err ||
-          !decodedToken.trips.some((tripId: number) => tripId === trip.id)
-        ) {
+        } else if (err || decodedToken.username !== trip.created_by) {
           res.status(401).json(Codes.INVALID_CRED);
         } else {
           next();
