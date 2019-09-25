@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import Secrets from '../config/secrets';
 import Codes from '../config/codes';
 
+// Restricts endpoint to those authorized for this user
+// Only call after validateUsername
 const restrictedByUser = (
   req: Request,
   res: Response,
@@ -28,6 +30,8 @@ const restrictedByUser = (
   }
 };
 
+// Restricts endpoint to those authorized for this trip
+// Only call after validateTripId
 const restrictedByTrip = (
   req: Request,
   res: Response,

@@ -16,6 +16,7 @@ declare module 'express-serve-static-core' {
   }
 }
 
+// Validating that the user by this username exists
 const validateUsername = async (
   req: Request,
   res: Response,
@@ -48,6 +49,8 @@ const validateUsername = async (
   }
 };
 
+// Validating that the user being friended exists
+// Only call after validateUsername
 const validateFriend = async (
   req: Request,
   res: Response,
@@ -75,6 +78,7 @@ const validateFriend = async (
   }
 };
 
+// Validating that the friendship relation exists
 const validateFriendship = async (
   req: Request,
   res: Response,

@@ -9,6 +9,7 @@ declare module 'express-serve-static-core' {
   }
 }
 
+// Validate that a trip by this id exists
 const validateTripId = async (
   req: Request,
   res: Response,

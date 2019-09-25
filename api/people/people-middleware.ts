@@ -10,6 +10,7 @@ declare module 'express-serve-static-core' {
   }
 }
 
+// Validate that a person by this id exists
 const validatePersonId = async (
   req: Request,
   res: Response,
@@ -17,7 +18,7 @@ const validatePersonId = async (
 ): Promise<void> => {
   const { id } = req.params;
 
-  // Ensure there's a username
+  // Ensure there's an id
   if (id) {
     try {
       const existingPerson = await People.getByPersonId(Number(id));
