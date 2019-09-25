@@ -1,6 +1,6 @@
 define({
   "name": "Trip Split API",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Documentation for the Trip Split API",
   "title": "Trip Split API",
   "url": "https://bd-trip-split.herokuapp.com/api",
@@ -9,7 +9,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2019-09-25T20:49:15.094Z",
+    "time": "2019-09-25T23:08:19.346Z",
     "url": "http://apidocjs.com",
     "version": "0.17.7"
   }

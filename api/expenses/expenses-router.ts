@@ -3,6 +3,7 @@ import Restricted from '../restricted-middleware';
 import ExpensesMiddleware from './expenses-middleware';
 import Expenses from './expenses-model';
 import Debts from '../debts/debts-model';
+import Codes from '../../config/codes';
 
 const router = require('express').Router();
 
@@ -89,8 +90,16 @@ router.post(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = Number(req.params.id);
-      const saved = await Debts.addDebtToExpense(req.body, id);
-      res.status(201).json(saved);
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      const { amount, person_id } = req.body;
+
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      if (amount && person_id) {
+        const saved = await Debts.addDebtToExpense(req.body, id);
+        res.status(201).json(saved);
+      } else {
+        res.status(400).json(Codes.BAD_REQUEST);
+      }
     } catch (err) {
       next(err);
     }
@@ -122,7 +131,6 @@ router
       try {
         const id = Number(req.params.id);
         const personId = Number(req.params.personId);
-        // eslint-disable-next-line @typescript-eslint/camelcase
         const { amount } = req.body;
         const updated = await Debts.updateDebt({ amount }, id, personId);
         res.status(200).json(updated);

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import Codes from '../../config/codes';
 import db from '../../database/db-config';
 
+// Validate that there's a valid user body and the username doesn't already exist
 const validateUser = async (
   req: Request,
   res: Response,

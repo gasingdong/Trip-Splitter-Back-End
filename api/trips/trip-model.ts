@@ -3,6 +3,7 @@ import db from '../../database/db-config';
 import { Trip } from '../../types';
 import People from '../people/people-model';
 import Expenses from '../expenses/expenses-model';
+import Editors from '../editors/editors-model';
 import Debts from '../debts/debts-model';
 
 interface TripInput {
@@ -31,42 +32,47 @@ const getByTripId = (id: number): Promise<Trip | null> => {
     .first<Trip>();
   const peopleQuery = People.getPeopleByTripId(id);
   const expensesQuery = Expenses.getExpensesByTripId(id);
-  return Promise.all([tripQuery, peopleQuery, expensesQuery]).then(
-    async ([trip, people, expenses]) => {
-      if (!trip) {
-        return null;
-      }
-
-      const filteredExpenses = await Promise.all(
-        expenses.map(async expense => {
-          const debts = await Debts.getDebtsByExpenseId(expense.id);
-          const filteredDebts = debts.map(debt => ({
-            expense_id: debt.expense_id,
-            person_id: debt.person_id,
-            amount: debt.amount,
-            person_name: debt.last_name
-              ? `${debt.first_name} ${debt.last_name}`
-              : debt.first_name,
-          }));
-          return {
-            id: expense.id,
-            name: expense.name,
-            person_id: expense.person_id,
-            amount: expense.amount,
-            person_name: expense.last_name
-              ? `${expense.first_name} ${expense.last_name}`
-              : expense.first_name,
-            debts: filteredDebts,
-          };
-        })
-      );
-      return {
-        ...trip,
-        people,
-        expenses: filteredExpenses,
-      };
+  const editorsQuery = Editors.getEditorsByTripId(id);
+  return Promise.all([
+    tripQuery,
+    peopleQuery,
+    expensesQuery,
+    editorsQuery,
+  ]).then(async ([trip, people, expenses, editors]) => {
+    if (!trip) {
+      return null;
     }
-  );
+
+    const filteredExpenses = await Promise.all(
+      expenses.map(async expense => {
+        const debts = await Debts.getDebtsByExpenseId(expense.id);
+        const filteredDebts = debts.map(debt => ({
+          expense_id: debt.expense_id,
+          person_id: debt.person_id,
+          amount: debt.amount,
+          person_name: debt.last_name
+            ? `${debt.first_name} ${debt.last_name}`
+            : debt.first_name,
+        }));
+        return {
+          id: expense.id,
+          name: expense.name,
+          person_id: expense.person_id,
+          amount: expense.amount,
+          person_name: expense.last_name
+            ? `${expense.first_name} ${expense.last_name}`
+            : expense.first_name,
+          debts: filteredDebts,
+        };
+      })
+    );
+    return {
+      ...trip,
+      people,
+      expenses: filteredExpenses,
+      editors,
+    };
+  });
 };
 
 const getTripsByUsername = (username: string): Promise<Trip[]> => {

@@ -12,6 +12,7 @@ declare module 'express-serve-static-core' {
   }
 }
 
+// Validate that an expense by this id exists
 const validateExpenseId = async (
   req: Request,
   res: Response,
@@ -45,6 +46,7 @@ const validateExpenseId = async (
   }
 };
 
+// Validate that a debt by this id exists
 const validateDebtId = async (
   req: Request,
   res: Response,

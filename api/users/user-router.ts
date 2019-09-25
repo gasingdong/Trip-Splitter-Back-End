@@ -5,6 +5,7 @@ import Trips from '../trips/trip-model';
 import Users from './user-model';
 import Friends from '../friends/friends-model';
 import { User } from '../../types';
+import Codes from '../../config/codes';
 
 const router = require('express').Router();
 
@@ -149,11 +150,14 @@ router.post(
   [UserMiddleware.validateUsername, Restricted.restrictedByUser],
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const saved = await Friends.addFriendToUser(
-        (req.user as User).id,
-        req.body.id
-      );
-      res.status(201).json(saved);
+      const { id } = req.body;
+
+      if (id) {
+        const saved = await Friends.addFriendToUser((req.user as User).id, id);
+        res.status(201).json(saved);
+      } else {
+        res.status(400).json(Codes.BAD_REQUEST);
+      }
     } catch (err) {
       next(err);
     }
