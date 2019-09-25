@@ -247,6 +247,54 @@ define({ "api": [
     "groupTitle": "Debts"
   },
   {
+    "type": "delete",
+    "url": "/trips/:id/editors/:editorId",
+    "title": "Delete Editor",
+    "name": "DeleteEditor",
+    "group": "Editor",
+    "permission": [
+      {
+        "name": "Trip Admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Trip's unique ID.</p>"
+          },
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "editorId",
+            "description": "<p>User ID for the editor.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of deleted records.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/trips/trip-router.ts",
+    "groupTitle": "Editor"
+  },
+  {
     "type": "post",
     "url": "/expenses/:id/debts",
     "title": "Add Debt for the Expense",
@@ -533,6 +581,63 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "./api/people/people-router.ts",
     "groupTitle": "People"
+  },
+  {
+    "type": "post",
+    "url": "/trips/:id/editors",
+    "title": "Add Editor for the Trip",
+    "name": "AddEditor",
+    "group": "Trip",
+    "permission": [
+      {
+        "name": "Trip Admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Trip's unique ID.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>User ID for the editor.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n user_id: 4\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the created Editor.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/trips/trip-router.ts",
+    "groupTitle": "Trip"
   },
   {
     "type": "post",
@@ -956,13 +1061,34 @@ define({ "api": [
             "optional": false,
             "field": "expenses.debts.amount",
             "description": "<p>Amount owed for the Debt.</p>"
+          },
+          {
+            "group": "content",
+            "type": "Object[]",
+            "optional": false,
+            "field": "editors",
+            "description": "<p>List of Editors on the Trip.</p>"
+          },
+          {
+            "group": "content",
+            "type": "Number",
+            "optional": false,
+            "field": "editors.id",
+            "description": "<p>ID of the User associated with the Editor.</p>"
+          },
+          {
+            "group": "content",
+            "type": "String",
+            "optional": false,
+            "field": "editors.username",
+            "description": "<p>Username of the User associated with the Editor.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Successful-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n id: 1,\n destination: \"Paris\",\n date: \"2019-02-20\",\n active: true,\n created_by: \"BarryAllen27\",\n people: [\n   {\n     id: 1,\n     first_name: \"Kyle\",\n     last_name: \"Rayner\",\n     user_id: null\n   },\n   {\n     id: 2,\n     first_name: \"John\",\n     last_name: \"Jones\",\n     user_id: null\n   },\n ]\n expenses: [\n   {\n     id: 1,\n     name: \"Uber\",\n     person_id: 1,\n     amount: 20.10,\n     person_name: \"John Jones\",\n     debts: [\n       {\n         expense_id: 1,\n         person_id: 1,\n         amount: 9.29,\n         person_name: \"Kyle Rayner\"\n       }\n     ]\n   }\n ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n id: 1,\n destination: \"Paris\",\n date: \"2019-02-20\",\n active: true,\n created_by: \"BarryAllen27\",\n people: [\n   {\n     id: 1,\n     first_name: \"Kyle\",\n     last_name: \"Rayner\",\n     user_id: null\n   },\n   {\n     id: 2,\n     first_name: \"John\",\n     last_name: \"Jones\",\n     user_id: null\n   },\n ]\n expenses: [\n   {\n     id: 1,\n     name: \"Uber\",\n     person_id: 1,\n     amount: 20.10,\n     person_name: \"John Jones\",\n     debts: [\n       {\n         expense_id: 1,\n         person_id: 1,\n         amount: 9.29,\n         person_name: \"Kyle Rayner\"\n       }\n     ]\n   }\n ],\n editors: [\n   {\n     id: 12,\n     username: \"SupermanSoybean12\"\n   }\n ]\n}",
           "type": "json"
         }
       ]

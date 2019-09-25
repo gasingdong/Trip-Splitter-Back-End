@@ -122,6 +122,62 @@ describe('trip-router.js', () => {
     });
   });
 
+  describe('add editor to trip', () => {
+    it('should refuse if not authorized', async () => {
+      const res = await request(server)
+        .post('/api/trips/1/editors')
+        .send({});
+      expect(res.status).toBe(401);
+    });
+
+    it('should add editor to trip', async () => {
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+
+      const addEditor = await request(server)
+        .post('/api/trips/1/editors')
+        .set('Authorization', token)
+        .send({ user_id: 2 });
+      expect(addEditor.status).toBe(201);
+
+      const getEditor = await request(server)
+        .get('/api/trips/1')
+        .set('Authorization', token);
+      expect(getEditor.status).toBe(200);
+      expect(getEditor.body.editors).toHaveLength(1);
+    });
+  });
+
+  describe('delete editor', () => {
+    it('should fail on invalid entry', async () => {
+      const res = await request(server).del('/api/trips/1/editors/2');
+      expect(res.status).toBe(401);
+    });
+
+    it('should delete debts', async () => {
+      const { token } = (await request(server)
+        .post('/api/auth/login')
+        .send({
+          username: Testing.TEST_USER,
+          password: Testing.TEST_PASS,
+        })).body;
+      const res = await request(server)
+        .del('/api/trips/1/editors/2')
+        .set('Authorization', token);
+      expect(res.status).toBe(200);
+
+      const getEditor = await request(server)
+        .get('/api/trips/1')
+        .set('Authorization', token);
+      expect(getEditor.status).toBe(200);
+      expect(getEditor.body.editors).toHaveLength(0);
+    });
+  });
+
   describe('delete trip', () => {
     it('should refuse if not authorized', async () => {
       const res = await request(server).del('/api/trips/1');
