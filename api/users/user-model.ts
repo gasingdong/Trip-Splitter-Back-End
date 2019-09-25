@@ -3,11 +3,18 @@ import db from '../../database/db-config';
 import Trips from '../trips/trip-model';
 import People from '../people/people-model';
 import { User } from '../../types';
+import Friends from '../friends/friends-model';
 
 interface UserInput {
   username: string;
   password: string;
 }
+
+const getById = (id: number): QueryBuilder<{}, User> => {
+  return db('users')
+    .where({ id })
+    .first<User>();
+};
 
 const getByUsername = async (username: string): Promise<User | null> => {
   const user = await db('users')
@@ -27,9 +34,11 @@ const getByUsername = async (username: string): Promise<User | null> => {
       };
     })
   );
+  const friends = await Friends.getFriendsByUsername(username);
   return {
     ...user,
     trips,
+    friends,
   };
 };
 
@@ -38,6 +47,7 @@ const add = (user: UserInput): QueryBuilder => {
 };
 
 export default {
+  getById,
   getByUsername,
   add,
 };

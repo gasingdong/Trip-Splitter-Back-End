@@ -973,6 +973,63 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/:username/friends",
+    "title": "Add Friend for the User",
+    "name": "CreateFriend",
+    "group": "User",
+    "permission": [
+      {
+        "name": "User"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>User's unique username.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Friend's unique User ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n id: 10\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the added Friend.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./api/users/user-router.ts",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
     "url": "/:username/trips",
     "title": "Add Trip for the User",
     "name": "CreateTrip",
@@ -984,30 +1041,32 @@ define({ "api": [
     ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "params": [
           {
-            "group": "Parameter",
+            "group": "params",
             "type": "String",
             "optional": false,
             "field": "username",
             "description": "<p>User's unique username.</p>"
-          },
+          }
+        ],
+        "request": [
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "String",
             "optional": true,
             "field": "destination",
             "description": "<p>Trip's destination or name.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "Date",
             "optional": true,
             "field": "date",
             "description": "<p>Trip's date.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "request",
             "type": "Boolean",
             "optional": true,
             "field": "active",
@@ -1032,6 +1091,56 @@ define({ "api": [
           "type": "json"
         }
       ]
+    },
+    "version": "0.0.0",
+    "filename": "./api/users/user-router.ts",
+    "groupTitle": "User"
+  },
+  {
+    "type": "delete",
+    "url": "/:username/friends/:id",
+    "title": "Delete Friend",
+    "name": "DeleteFriend",
+    "group": "User",
+    "permission": [
+      {
+        "name": "User"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "params": [
+          {
+            "group": "params",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>User's unique username.</p>"
+          }
+        ],
+        "request": [
+          {
+            "group": "request",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Friend's unique User ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>Number of deleted records.</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "./api/users/user-router.ts",
@@ -1121,13 +1230,34 @@ define({ "api": [
             "optional": false,
             "field": "trips.num_people",
             "description": "<p>The number of people associated with the Trip.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "friends",
+            "description": "<p>List of friends of the User.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "friends.id",
+            "description": "<p>User ID of the Friend.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "friends.username",
+            "description": "<p>Username of the Friend.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Successful-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n id: 1,\n username: \"BarryAllen27\"\n photo: null,\n trips: [\n   {\n     id: 1,\n     destination: \"Paris\",\n     date: null,\n     active: true,\n     num_people: 4\n   }\n ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n id: 1,\n username: \"BarryAllen27\"\n photo: null,\n trips: [\n   {\n     id: 1,\n     destination: \"Paris\",\n     date: null,\n     active: true,\n     num_people: 4\n   }\n ],\n friends: [\n   {\n     id: 3,\n     username: \"SpiderPig\"\n   }\n ]\n}",
           "type": "json"
         }
       ]
