@@ -3,11 +3,19 @@ import request from 'supertest';
 import db from '../../database/db-config';
 import server from '../server';
 import Testing from '../../config/testing';
+import prepTestDb from '../../helpers/prepTestDb';
+
+let token = '';
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
+  await prepTestDb();
+  token = (await request(server)
+    .post('/api/auth/login')
+    .send({
+      username: Testing.TEST_USER,
+      password: Testing.TEST_PASS,
+    })).body.token;
 });
 
 describe('people-router.js', () => {
@@ -20,12 +28,6 @@ describe('people-router.js', () => {
     });
 
     it('should edit person', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .put('/api/people/1')
         .set('Authorization', token)
@@ -52,12 +54,6 @@ describe('people-router.js', () => {
     });
 
     it('should delete person', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .del('/api/people/1')
         .set('Authorization', token);

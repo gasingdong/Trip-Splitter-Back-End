@@ -1,14 +1,21 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
-import db from '../../database/db-config';
 import server from '../server';
 import Testing from '../../config/testing';
 import Friends from '../friends/friends-model';
+import prepTestDb from '../../helpers/prepTestDb';
+
+let token = '';
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
+  await prepTestDb();
+  token = (await request(server)
+    .post('/api/auth/login')
+    .send({
+      username: Testing.TEST_USER,
+      password: Testing.TEST_PASS,
+    })).body.token;
 });
 
 describe('user-router.js', () => {
@@ -44,13 +51,6 @@ describe('user-router.js', () => {
     });
 
     it('should add trip to user', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const addTrip = await request(server)
         .post(`/api/users/${Testing.TEST_USER}/trips`)
         .set('Authorization', token);
@@ -73,13 +73,6 @@ describe('user-router.js', () => {
     });
 
     it('should add friend to user', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const addFriend = await request(server)
         .post(`/api/users/${Testing.TEST_USER}/friends`)
         .set('Authorization', token)
@@ -103,12 +96,6 @@ describe('user-router.js', () => {
     });
 
     it('should delete friend', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .del(`/api/users/${Testing.TEST_USER}/friends/2`)
         .set('Authorization', token);

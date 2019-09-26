@@ -1,13 +1,20 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
-import db from '../../database/db-config';
 import server from '../server';
 import Testing from '../../config/testing';
+import prepTestDb from '../../helpers/prepTestDb';
+
+let token = '';
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
+  await prepTestDb();
+  token = (await request(server)
+    .post('/api/auth/login')
+    .send({
+      username: Testing.TEST_USER,
+      password: Testing.TEST_PASS,
+    })).body.token;
 });
 
 describe('trip-router.js', () => {
@@ -18,12 +25,6 @@ describe('trip-router.js', () => {
     });
 
     it('should get right trip from database', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .get('/api/trips/1')
         .set('Authorization', token);
@@ -46,12 +47,6 @@ describe('trip-router.js', () => {
     });
 
     it('should update trip', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .put('/api/trips/1')
         .set('Authorization', token)
@@ -71,13 +66,6 @@ describe('trip-router.js', () => {
     });
 
     it('should add person to trip', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const addPerson = await request(server)
         .post('/api/trips/1/people')
         .set('Authorization', token)
@@ -101,13 +89,6 @@ describe('trip-router.js', () => {
     });
 
     it('should add expense to trip', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const addExpense = await request(server)
         .post('/api/trips/1/expenses')
         .set('Authorization', token)
@@ -131,13 +112,6 @@ describe('trip-router.js', () => {
     });
 
     it('should add editor to trip', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const addEditor = await request(server)
         .post('/api/trips/1/editors')
         .set('Authorization', token)
@@ -159,12 +133,6 @@ describe('trip-router.js', () => {
     });
 
     it('should delete debts', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .del('/api/trips/1/editors/2')
         .set('Authorization', token);
@@ -185,13 +153,6 @@ describe('trip-router.js', () => {
     });
 
     it('should delete trip', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const deleted = await request(server)
         .del('/api/trips/1')
         .set('Authorization', token);
