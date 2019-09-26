@@ -2,14 +2,14 @@
 import request from 'supertest';
 import db from '../../database/db-config';
 import server from '../server';
+import prepTestDb from '../../helpers/prepTestDb';
 
 // Dummy user for testing purposes
 const dummyUser = { username: 'dummyuser', password: 'dummypassword' };
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
+  await prepTestDb();
 });
 
 describe('auth-router.js', () => {
