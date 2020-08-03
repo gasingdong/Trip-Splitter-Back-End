@@ -1,7 +1,7 @@
 {
-  "name": "Back-End",
+  "name": "trip-splitter-back-end",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend server and API for Trip Splitter, a trip expense splitting web application service.",
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=testing jest --watch",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Build-Week-Trip-Split-FT/Back-End.git"
+    "url": "git+https://github.com/gasingdong/Trip-Splitter-Back-End.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Brandon Dong",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Build-Week-Trip-Split-FT/Back-End/issues"
+    "url": "https://github.com/gasingdong/Trip-Splitter-Back-End/issues"
   },
-  "homepage": "https://github.com/Build-Week-Trip-Split-FT/Back-End#readme",
+  "homepage": "https://github.com/gasingdong/Trip-Splitter-Back-End#readme",
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.6",
