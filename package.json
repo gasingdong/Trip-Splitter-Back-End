@@ -26,6 +26,7 @@
     "@types/helmet": "^0.0.44",
     "@types/jsonwebtoken": "^8.3.4",
     "@types/node": "^12.7.5",
+    "apidoc": "^0.17.7",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",

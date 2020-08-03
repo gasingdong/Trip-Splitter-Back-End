@@ -2,14 +2,14 @@
 import request from 'supertest';
 import db from '../../database/db-config';
 import server from '../server';
+import prepTestDb from '../../helpers/prepTestDb';
 
 // Dummy user for testing purposes
-const dummyUser = { username: 'dummy', password: 'dummypassword' };
+const dummyUser = { username: 'dummyuser', password: 'dummypassword' };
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
+  await prepTestDb();
 });
 
 describe('auth-router.js', () => {
@@ -20,7 +20,7 @@ describe('auth-router.js', () => {
         .send(dummyUser);
       expect(res.status).toBe(201);
       const results = await db('users');
-      expect(results).toHaveLength(2);
+      expect(results).toHaveLength(3);
     });
 
     it('should fail on invalid entry', async () => {

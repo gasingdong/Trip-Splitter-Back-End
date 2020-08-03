@@ -1,15 +1,22 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
-import db from '../../database/db-config';
 import server from '../server';
 import Testing from '../../config/testing';
 import Expenses from './expenses-model';
 import Debts from '../debts/debts-model';
+import prepTestDb from '../../helpers/prepTestDb';
+
+let token = '';
 
 // Initiate the migrations for the testing environment
 beforeAll(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
+  await prepTestDb();
+  token = (await request(server)
+    .post('/api/auth/login')
+    .send({
+      username: Testing.TEST_USER,
+      password: Testing.TEST_PASS,
+    })).body.token;
 });
 
 describe('expenses-router.js - debts', () => {
@@ -22,13 +29,6 @@ describe('expenses-router.js - debts', () => {
     });
 
     it('should add debt to expense', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
-
       const addDebt = await request(server)
         .post('/api/expenses/2/debts')
         .set('Authorization', token)
@@ -49,12 +49,6 @@ describe('expenses-router.js - debts', () => {
     });
 
     it('should edit debts', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .put('/api/expenses/2/debts/1')
         .set('Authorization', token)
@@ -77,12 +71,6 @@ describe('expenses-router.js - debts', () => {
     });
 
     it('should delete debts', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .del('/api/expenses/1/debts/2')
         .set('Authorization', token);
@@ -104,12 +92,6 @@ describe('expenses-router.js', () => {
     });
 
     it('should edit expense', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .put('/api/expenses/1')
         .set('Authorization', token)
@@ -134,12 +116,6 @@ describe('expenses-router.js', () => {
     });
 
     it('should delete expense', async () => {
-      const { token } = (await request(server)
-        .post('/api/auth/login')
-        .send({
-          username: Testing.TEST_USER,
-          password: Testing.TEST_PASS,
-        })).body;
       const res = await request(server)
         .del('/api/expenses/1')
         .set('Authorization', token);

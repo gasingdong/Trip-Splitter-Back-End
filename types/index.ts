@@ -4,6 +4,12 @@ export interface User {
   password: string;
   photo: string;
   trips: Trip[];
+  friends: Friend[];
+}
+
+export interface Friend {
+  friend_id: number;
+  username: string;
 }
 
 export interface Trip {
@@ -13,6 +19,10 @@ export interface Trip {
   date: null | Date;
   active: boolean;
   created_by: string;
+  editors: {
+    id: number;
+    username: string;
+  }[];
 }
 
 export interface Person {
@@ -30,6 +40,11 @@ export interface Expense {
   last_name: null | string;
   trip_id: number;
   amount: number;
+}
+
+export interface Editor {
+  user_id: number;
+  trip_id: number;
 }
 
 export interface Debt {

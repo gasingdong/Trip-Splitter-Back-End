@@ -48,7 +48,7 @@ const updateDebt = (
 ): QueryBuilder => {
   return db('debt')
     .where({ expense_id, person_id })
-    .update(debt, 'id');
+    .update(debt, ['expense_id', 'person_id']);
 };
 
 const deleteDebt = (expense_id: number, person_id: number): QueryBuilder => {

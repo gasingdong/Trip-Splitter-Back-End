@@ -6,7 +6,7 @@ import Secrets from '../../config/secrets';
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   return knex('users')
-    .truncate()
+    .del()
     .then(() => {
       // Inserts seed entries
       return knex('users').insert([
