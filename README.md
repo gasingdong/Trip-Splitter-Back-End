@@ -1,20 +1,57 @@
-# Trip Split Back-End
-## Project Links
-* [API Documentation](https://bd-trip-split.herokuapp.com/api/docs)
-* [Project Canvas](https://docs.google.com/document/d/1vFAef5K2NTOUZsUn5fWRLBOrrvhE_DAcsiTECyzRcQg/edit?usp=sharing)
+# Welcome to Trip Splitter Backend Server 👋
 
-## Local Development
-To run the server for local development, you will need to install dependencies:
+[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://bd-trip-split.herokuapp.com/api/docs/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/gasingdong/Trip-Splitter-Back-End/graphs/commit-activity)
+[![License: MIT](https://img.shields.io/github/license/gasingdong/Trip-Splitter-Back-End)](https://github.com/gasingdong/Trip-Splitter-Back-End/blob/master/LICENSE)
+
+> Backend server and API for Trip Splitter, a trip expense splitting web application service that helps keep track of transactions over a trip and splitting it evenly between participants.
+
+### 🏠 [Homepage](https://bd-trip-split.herokuapp.com)
+
+### :blue_book: [Frontend](https://github.com/Build-Week-Trip-Split-FT/Front-End)
+
+## Install
+
+```sh
+yarn install
 ```
-yarn install | npm install
+
+## Usage
+
+```sh
+yarn run start
 ```
-And then you can start the server either normally or for development:
+
+## Run tests
+
+```sh
+yarn run test
 ```
-normal: yarn start | npm run start
-dev: yarn server | npm run server
-```
-To run the application tests:
-```
-yarn test | npm run test
-```
-The server will default to run on port 5000. To set the server to a different port, you will need to configure the `PORT` configuration in the environment variables.
+
+## Author
+
+👤 **Brandon Dong**
+
+- Website: www.brandondong.com
+- Email: contact@brandondong.com
+- Github: [@gasingdong](https://github.com/gasingdong)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+Feel free to check [issues page](https://github.com/gasingdong/Trip-Splitter-Back-End/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2020 [Brandon Dong](https://github.com/gasingdong).
+
+This project is [MIT](https://github.com/gasingdong/Trip-Splitter-Back-End/blob/master/LICENSE) licensed.
+
+---
+
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

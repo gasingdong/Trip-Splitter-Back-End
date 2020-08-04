@@ -1,7 +1,7 @@
 {
   "name": "trip-splitter-back-end",
   "version": "1.0.0",
-  "description": "Backend server and API for Trip Splitter, a trip expense splitting web application service.",
+  "description": "Backend server and API for Trip Splitter, a trip expense splitting web application service that helps keep track of transactions over a trip and splitting it evenly between participants.",
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=testing jest --watch",
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/gasingdong/Trip-Splitter-Back-End.git"
   },
   "keywords": [],
-  "author": "Brandon Dong",
+  "author": "Brandon Dong <contact@brandondong.com> (https://www.brandondong.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gasingdong/Trip-Splitter-Back-End/issues"
